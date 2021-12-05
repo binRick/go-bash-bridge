@@ -22,15 +22,14 @@ color reset
 #passh -L .40-build-c-go-sh.log /bin/bash --norc --noprofile -c "./build-c-go.sh"
 ./build-c-go.sh
 (
-  export LD_LIBRARY_PATH=$LIB_DIR 
-  export CGO_ENABLED=1 
-  cd $RELEASE_DIR/../cmd/basic/. 
-  command go build -a -v -o $BIN_DIR/basic main.go
+	export LD_LIBRARY_PATH=$LIB_DIR
+	export CGO_ENABLED=1
+	cd $RELEASE_DIR/../cmd/basic/.
+	command go build -a -v -o $BIN_DIR/basic main.go
 )
 
 color black blue
 passh -L .40-build-cgo-binary.log bash --norc --noprofile -c "env LD_LIBRARY_PATH=$LIB_DIR $BIN_DIR/basic"
-
 
 ls -altr $LIB_DIR/.
 ls -altr $BIN_DIR/.

@@ -3,7 +3,6 @@ set -e
 cd $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source .envrc
 
-
 function install_instructions() {
 	case "$1" in
 	md)

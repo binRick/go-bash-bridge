@@ -8,3 +8,5 @@ bin/*
 RELEASE/bin/*
 RELEASE/lib/*
 .attic
+lib/libbash.a
+*.swp
