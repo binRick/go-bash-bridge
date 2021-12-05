@@ -1,21 +1,22 @@
-package main
+package basic
 
 /*
 #cgo CFLAGS: -g -Wall -fPIC
 #cgo LDFLAGS: -L../../RELEASE/lib
-#include "./../../src/c/bash.c"
+#include "./../../../../../go-bash-bridge/RELEASE/lib"
 */
 import "C"
 import (
 	"fmt"
 	"os"
 
-	bash "local.dev/cgo-bash"
+	gbb "github.com/binRick/go-bash-bridge/src/go/gbb"
+	//	gbb "github.com/binRick/go-bash-bridge/src/go/gbb"
 )
 
 func ExampleRegister() {
-	bash.Register("hello", hello)
-	status := bash.Main([]string{os.Args[0], "-c", "hello world"}, os.Environ())
+	gbb.Register("hello", hello)
+	status := gbb.Main([]string{os.Args[0], "-c", "hello world"}, os.Environ())
 	fmt.Println("exit status", status)
 	// Output:
 	// Hello from Go! args=[world]

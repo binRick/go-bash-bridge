@@ -1,4 +1,4 @@
-package bash
+package gbb
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"unsafe"
 )
 
-//#include "bash.c"
+//#include "./../../../../go-bash-bridge/src/c/bash.c"
 import "C"
 
 var (

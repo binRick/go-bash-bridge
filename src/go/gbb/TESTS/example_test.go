@@ -1,21 +1,21 @@
-package bash_test
+package example_go_plugin
 
 /*
 #cgo CFLAGS: -g -Wall
 #cgo LDFLAGS: -L. -llibbash
-#include "../c/bash.h"
+#include "./../../../../go-bash-bridge/src/c/bash.h"
 */
 
 import (
 	"fmt"
 	"os"
 
-	bash "github.com/tiborvass/cgo-bash"
+	gbb "github.com/go-bash-bridge/src/go/gbb"
 )
 
 func ExampleRegister() {
-	bash.Register("hello", hello)
-	status := bash.Main([]string{os.Args[0], "-c", "hello world"}, os.Environ())
+	gbb.Register("hello", hello)
+	status := gbb.Main([]string{os.Args[0], "-c", "hello world"}, os.Environ())
 	fmt.Println("exit status", status)
 	// Output:
 	// Hello from Go! args=[world]
