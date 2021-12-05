@@ -1,4 +1,4 @@
-package example_go_plugin
+package test1
 
 /*
 #cgo CFLAGS: -g -Wall
