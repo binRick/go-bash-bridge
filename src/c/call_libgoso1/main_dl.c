@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <dlfcn.h>
+//#include "/root/go-bash-bridge/RELEASE/include/libgoso1.h"
 
 typedef long long go_int;
 

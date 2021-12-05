@@ -9,8 +9,8 @@ import "C"
 var count int
 var mtx sync.Mutex
 
-//export Add_goso1
-func Add_goso1(a, b int) int {
+//export Add_libgoso1
+func Add_libgoso1(a, b int) int {
 	return a + b
 }
 
