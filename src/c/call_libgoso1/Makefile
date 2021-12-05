@@ -33,12 +33,12 @@ build: dynamic static
 
 dynamic:
 	color magenta black
-	$(GCC) -o $(BIN_DYNAMIC) -L $(RELEASE_LIB_DIR) -ldl $(SRC_FILE_DL) $(LIBGOSO1_PATH)
+	$(GCC) -o $(BIN_DYNAMIC) -L $(RELEASE_LIB_DIR) $(SRC_FILE_DL) $(LIBGOSO1_PATH) -ldl
 	color reset
 
 static:
 	color blue black
-	$(GCC) -o $(BIN_STATIC) -L $(RELEASE_LIB_DIR) -I $(RELEASE_INCLUDE_DIR)  $(SRC_FILE_DL)
+	$(GCC) -o $(BIN_STATIC) -L $(RELEASE_LIB_DIR) -I $(RELEASE_INCLUDE_DIR) -lgoso1 $(SRC_FILE_DL)
 	color reset
 
 release:

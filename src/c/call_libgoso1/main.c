@@ -15,8 +15,6 @@ int main() {
       a, b,
       Add_libgoso1(a, b)
     ); 
-/*
-*/
     dlclose(handle);
 
 }
