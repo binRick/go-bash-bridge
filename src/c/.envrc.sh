@@ -9,7 +9,7 @@ EXPORTED_C_FUNCTIONS_SOURCE_FILE="$SRC_DIR/c/$PACKAGE_NAME.c"
 
 
 
-export BUILD_SHARED_OBJECT_CMD="env gcc -o $LIB_DIR/$SHARED_OBJECT_FILE_NAME -Wall -g -shared -fPIC -lm $EXPORTED_C_FUNCTIONS_SOURCE_FILE"
+#export BUILD_SHARED_OBJECT_CMD="env gcc -o $LIB_DIR/$SHARED_OBJECT_FILE_NAME -Wall -g -shared -fPIC -lm $EXPORTED_C_FUNCTIONS_SOURCE_FILE"
 
 
-bash -c "ansi --yellow --italic \"\$(command cat $EXPORTED_C_FUNCTIONS_SOURCE_FILE)\""
+#bash -c "ansi --yellow --italic \"\$(command cat $EXPORTED_C_FUNCTIONS_SOURCE_FILE)\""
