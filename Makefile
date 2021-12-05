@@ -8,12 +8,13 @@ RELEASE_INCLUDE_DIR=$(RELEASE_DIR)/include
 EXEC_ENV=LD_LIBRARY_PATH=$(RELEASE_LIB_DIR)
 
 GOSO1=./src/go/libgoso1
-GOCALLCSO1=./src/go/call_cso1
+GOCALLCSO1=./src/go/call_libcso1
 
-CSO1=./src/c/cso1
+CSO1=libcso1
+CSO1_PATH=./src/c/$(CSO1)
 CCALLGOSO1=./src/c/call_libgoso1
 
-all: clean libgoso1 cso1 call_libgoso1 call_cso1 list validate
+all: clean libgoso1 libcso1 call_libgoso1 call_libcso1 list validate
 
 libgoso1:
 	$(MAKE) -C $(GOSO1)
@@ -21,10 +22,10 @@ libgoso1:
 call_libgoso1:
 	$(MAKE) -C $(CCALLGOSO1)
 
-cso1:
-	$(MAKE) -C $(CSO1)
+libcso1:
+	$(MAKE) -C $(CSO1_PATH)
 
-call_cso1:
+call_libcso1:
 	$(MAKE) -C $(GOCALLCSO1)
 
 clean:
@@ -42,7 +43,7 @@ list:
 
 validate:
 	color blue black
-	env $(EXEC_ENV) ./RELEASE/bin/call_cso1
+	env $(EXEC_ENV) ./RELEASE/bin/call_libcso1
 	color reset
 	color magenta black
 	env $(EXEC_ENV) ./RELEASE/bin/call_libgoso1-static

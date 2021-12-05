@@ -20,12 +20,12 @@ RELEASE_INCLUDE_DIR=../../../RELEASE/include
 GO_SRC_DIR=.
 GO_SRC=main.go
 SRC_FILES=main.go
-NAME=call_cso1
-SRC=call_cso1.c
-OBJ=call_cso1.o
-LIB_SO=libcall_cso1.so
-LIB_OBJ=libcall_cso1.o
-LIB_AR=libcall_cso1.a
+NAME=call_libcso1
+SRC=call_libcso1.c
+OBJ=call_libcso1.o
+LIB_SO=libcall_libcso1.so
+LIB_OBJ=libcall_libcso1.o
+LIB_AR=libcall_libcso1.a
 
 
 all: clean init tidy build validate

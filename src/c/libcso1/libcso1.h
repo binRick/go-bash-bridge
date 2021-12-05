@@ -8,13 +8,13 @@
 #include <limits.h>
 #include <ctype.h>
 
-struct cso1Struct1 {
+struct libcso1Struct1 {
 	char *name;
 	int qty;
 };
 
-void mycso1Struct1Printer(char *name);
-extern char * cso1_CHAR_TEST();
-extern int cso1_INT_TEST(int, int);
+void libcso1Struct1Printer(char *name);
+extern char * libcso1_CHAR_TEST();
+extern int libcso1_INT_TEST(int, int);
 
 #endif
