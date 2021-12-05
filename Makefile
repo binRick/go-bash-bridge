@@ -14,7 +14,12 @@ CSO1=libcso1
 CSO1_PATH=./src/c/$(CSO1)
 CCALLGOSO1=./src/c/call_libgoso1
 
-all: clean libgoso1 libcso1 call_libgoso1 call_libcso1 list validate
+BASH_PATH=./src/bash
+
+all: clean bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate
+
+bash:
+	$(MAKE) -C $(BASH_PATH)
 
 libgoso1:
 	$(MAKE) -C $(GOSO1)
