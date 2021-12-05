@@ -31,9 +31,15 @@ TARBALL=bash-$(BASH_VER).tar.gz
 TARBALL_PATH=$(RELEASE_DIST_DIR)/bash-$(BASH_VER).tar.gz
 PATCHES=$(shell ls $(BASE_DIR)/patches/*.patch)
 
+
 all: init fetch untar build
 
-init:
+build: patch configure static strip validate
+
+go:
+	command -v goimports || go install golang.org/x/tools/cmd/goimports@latest
+
+init: go
 	color black magenta
 	mkdir -p $(RELEASE_INCLUDE_DIR)
 	mkdir -p $(RELEASE_LIB_DIR)
@@ -56,7 +62,6 @@ patch:
 	for p in $(PATCHES); do sh -c "$(PASSH_WRAPPER) patch -d $(DIST_DIR)/bash-$(BASH_VER) --backup -p1 -i $$p"; done
 	color reset
 
-build: patch configure static strip
 
 configure:
 	color black blue
