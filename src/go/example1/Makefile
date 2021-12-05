@@ -50,8 +50,7 @@ build:
 
 clean:
 	color red black
-	$(RM) go.mod go.sum
-	[[ -f $(RELEASE_BIN_DIR)/$(NAME) ]] && unlink $(RELEASE_BIN_DIR)/$(NAME)
+	$(RM) go.mod go.sum $(RELEASE_BIN_DIR)/$(NAME)
 	color clear
 
 validate_build:
