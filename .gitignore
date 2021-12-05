@@ -11,4 +11,3 @@ RELEASE/lib/*
 lib/libbash.a
 *.swp
 RELEASE/*/*
-Makefiles
