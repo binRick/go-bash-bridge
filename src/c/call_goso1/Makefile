@@ -30,7 +30,7 @@ all: init clean build release validate
 build:
 	color blue black
 	#$(GCC) -o $(BIN) -L $(RELEASE_LIB_DIR) -I  $(RELEASE_INCLUDE_DIR) -ldl $(SRC_FILE_DL)
-	$(GCC) -o $(BIN) -L $(RELEASE_LIB_DIR) -ldl $(SRC_FILE_DL) $(RELEASE_LIB_DIR)/goso1.so
+	$(GCC) -o $(BIN) -L $(RELEASE_LIB_DIR) -ldl $(SRC_FILE_DL) goso1.so
 #	$(GCC) -o $(BIN) -I $(RELEASE_INCLUDE_DIR) $(SRC_FILE) -ldl $(GOSO1)
 # $(GOSO1)
 	color reset

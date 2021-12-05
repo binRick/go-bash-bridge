@@ -14,7 +14,7 @@ GOCALLCSO1=./src/go/call_cso1
 CSO1=./src/c/cso1
 CCALLGOSO1=./src/c/call_goso1
 
-all: clean goso1 cso1 call_goso1 call_cso1 list
+all: clean goso1 cso1 call_goso1 call_cso1 list validate
 
 goso1:
 	$(MAKE) -C $(GOSO1)
@@ -42,5 +42,9 @@ list:
 	color reset
 
 validate:
+	color blue black
 	env $(EXEC_ENV) ./RELEASE/bin/call_cso1
+	color reset
+	color magenta black
 	env $(EXEC_ENV) ./RELEASE/bin/call_goso1
+	color reset
