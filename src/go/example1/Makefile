@@ -18,8 +18,8 @@ RELEASE_BIN_DIR=../../../RELEASE/bin
 RELEASE_INCLUDE_DIR=../../../RELEASE/include
 
 GO_SRC_DIR=.
-GO_SRC=example1.go
-SRC_FILES=example1.go
+GO_SRC=main.go
+SRC_FILES=main.go
 NAME=example1
 SRC=example1.c
 OBJ=example1.o

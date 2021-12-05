@@ -14,7 +14,7 @@ import (
 const NAME = "EXAMPLE1_GO"
 
 func debug(msg string) {
-	fmt.Fprintf(stderr, "<%d> [%s] :: %s\n",
+	fmt.Fprintf(os.Stderr, "<%d> [%s] :: %s\n",
 		os.Getpid(),
 		NAME,
 		msg,
