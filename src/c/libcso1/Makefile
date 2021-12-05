@@ -1,18 +1,15 @@
-.SUFFIXES: .o .c
+.SUFFIXES: .o .c .so .a
 
 GCC ?= gcc
 GO ?= go
-GOFLAGS=build -buildmode=c-archive
-SHARED_OBJ_FLAGS=-shared -lm
-CFLAGS=
-LIBS=
-
 RM=rm -f
 MV=mv -f
 CP=cp -f
 GREP=grep
-AR=ar
 RANLIB=ranlib
+AR=ar
+
+SHARED_OBJ_FLAGS=-shared -lm
 
 RELEASE_LIB_DIR=../../../RELEASE/lib
 RELEASE_BIN_DIR=../../../RELEASE/bin
@@ -23,6 +20,7 @@ HDR=$(NAME).h
 SRC=$(NAME).c
 OBJ=$(NAME).o
 SO=$(NAME).so
+ARF=$(NAME).a
 
 all: init clean dynamic static include validate
 
@@ -40,24 +38,24 @@ dynamic:
 	$(MV) $(SO) $(RELEASE_LIB_DIR)/.
 	$(RM) $(OBJ)
 
+static:
+	$(GCC) -c $(SRC)
+	$(AR) rc $(ARF) $(OBJ)
+	$(RANLIB) $(ARF)
+	$(MV) $(ARF) $(RELEASE_LIB_DIR)/.
+	$(RM) $(OBJ)
+
 validate_dynamic:
 	color black magenta
 	file $(RELEASE_LIB_DIR)/$(SO) | grep 'shared object'
 	color reset
 
-static:
-	$(GCC) -c $(SRC)
-	$(AR) rc $(AR) $(OBJ)
-	$(RANLIB) $(AR)
-	$(MV) $(AR) $(RELEASE_LIB_DIR)/.
-	$(RM) $(OBJ)
-
 validate_static:
 	color black blue
-	file $(RELEASE_LIB_DIR)/$(AR) | grep 'ar archive'
+	file $(RELEASE_LIB_DIR)/$(ARF) | grep 'ar archive'
 	color reset
 
 clean:
-	$(RM) $(RELEASE_INCLUDE_DIR)/$(HDR) $(RELEASE_LIB_DIR)/$(OBJ) $(RELEASE_LIB_DIR)/$(SO) $(RELEASE_LIB_DIR)/$(OBJ) $(RELEASE_LIB_DIR)/$(AR)
+	$(RM) $(RELEASE_INCLUDE_DIR)/$(HDR) $(RELEASE_LIB_DIR)/$(OBJ) $(RELEASE_LIB_DIR)/$(SO) $(RELEASE_LIB_DIR)/$(OBJ) $(RELEASE_LIB_DIR)/$(ARF)
 
 validate:	validate_dynamic validate_static
