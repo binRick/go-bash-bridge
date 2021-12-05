@@ -1,0 +1,10 @@
+bash-*
+!bash-*.tar.gz.sha256
+c.go
+.attic
+libbash.so
+.*-*.log
+bin/*
+RELEASE/bin/*
+RELEASE/lib/*
+.attic
