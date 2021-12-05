@@ -9,20 +9,25 @@ import "C"
 import (
 	"fmt"
 	"os"
+	"time"
+
+	"github.com/k0kubun/pp"
 )
 
 const NAME = "EXAMPLE1_GO"
 
-func debug(msg string) {
-	fmt.Fprintf(os.Stderr, "<%d> [%s] :: %s\n",
+func debug(msg string, dat interface{}) {
+	dat = pp.Sprintf(`%s`, dat)
+	fmt.Fprintf(os.Stderr, "<%d> [%s] :: %s | %s\n",
 		os.Getpid(),
 		NAME,
 		msg,
+		dat,
 	)
 }
 
 func main() {
-	debug("main init")
-	debug("main end")
-	//fmt.Println(C.addSomeNumbers(2, 45))
+	debug("main      init        ", time.Now().Unix())
+	debug("main  INT_TEST 5 + 10=", C.INT_TEST(5, 10))
+	debug("main       end        ", time.Now().Unix())
 }

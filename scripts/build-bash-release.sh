@@ -22,7 +22,8 @@ PATCHES_DIR=$BASE_DIR/patches
 bashsrc="bash-${VERSION}"
 tarball="$bashsrc.tar.gz"
 archive="$DIST_DIR/$tarball"
-shasum="$bashsrc.sha256"
+shasum="$tarball.sha256"
+shasumfile="$DIST_DIR/$shasum"
 export BASH_SOURCE_CODE_DIRECTORY=$DIST_DIR/$bashsrc
 
 [[ -d $BIN_DIR ]] || mkdir -p $BIN_DIR
@@ -83,7 +84,7 @@ download_bash_source
 
 
 
-#shasum -c "$shasum" || exit 1
+(cd $DIST_DIR && shasum -c "$shasumfile") || exit 1
 if [ ! -d "$BASH_SOURCE_CODE_DIRECTORY" ]; then
 	(
     cd $$BASH_SOURCE_CODE_DIRECTORY

@@ -28,44 +28,22 @@ LIB_OBJ=libexample1.o
 LIB_AR=libexample1.a
 
 
-all: clean tidy build
+all: clean tidy build validate
 
 tidy:
 	gofmt -w $(SRC_FILES)
 	goimports -w $(SRC_FILES)
 
 build:
-	$(GO) mod init $(NAME)
+	[[ -f go.mod ]] || $(GO) mod init $(NAME)
 	$(GO) mod tidy
 	$(GO) get
 	$(GO) build -o $(RELEASE_BIN_DIR)/$(NAME) $(GO_SRC_DIR)
 
-
-dynamic:
-	$(GCC) -fPIC -c $(SRC)
-	$(GCC) $(SHARED_OBJ_FLAGS) -o $(LIB_SO) $(OBJ)
-	$(MV) $(LIB_SO) $(RELEASE_LIB_DIR)/.
-	$(RM) $(LIB_OBJ)
-
-validate_dynamic:
-	color black magenta
-	file $(RELEASE_LIB_DIR)/$(LIB_SO) | grep 'shared object'
-	color reset
-
-static:
-	$(GCC) -c $(SRC)
-	$(AR) rc $(LIB_AR) $(OBJ)
-	$(RANLIB) $(LIB_AR)
-	$(MV) $(LIB_AR) $(RELEASE_LIB_DIR)/.
-	$(RM) $(OBJ)
-
-validate_static:
-	color black blue
-	file $(RELEASE_LIB_DIR)/$(LIB_AR) | grep 'ar archive'
-	color reset
-
 clean:
-	$(RM) go.mod go.sum
-#$(OBJ) $(LIB_SO) $(LIB_OBJ) $(LIB_AR)
+	echo $(RM) go.mod go.sum
 
-validate:	validate_dynamic validate_static
+validate_build:
+	$(RELEASE_BIN_DIR)/$(NAME)
+	
+validate:	validate_build

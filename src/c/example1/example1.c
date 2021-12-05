@@ -8,7 +8,6 @@ void myStructPrinter(char *s) {
   );
 }
 
-
 char * CHAR_TEST() {
 	return "Hello there\0";
 }
