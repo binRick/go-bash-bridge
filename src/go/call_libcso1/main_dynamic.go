@@ -1,8 +1,12 @@
+//go:build dynamic
+// +build dynamic
+
 package main
 
 /*
 #include "/root/go-bash-bridge/RELEASE/include/libcso1.h"
 #cgo LDFLAGS: -lcso1 -L/root/go-bash-bridge/RELEASE/lib
+#cgo CFLAGS: -I/root/go-bash-bridge/RELEASE/include
 */
 import "C"
 
