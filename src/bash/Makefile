@@ -96,12 +96,37 @@ validate:
 	(eval $(BIN_DIR)/bash --norc --noprofile -c '$(ECHO_OK_CMD)'||true)|grep '^OK$$'
 	color reset
 
+LOADABLES_CFILES=$(shell command ls $(BASH_DIR)/examples/loadables/*.c|xargs -I % basename % |sort -u)
+LOADABLES=$(shell command ls $(BASH_DIR)/examples/loadables/*.c|xargs -I % basename % .c|sort -u)
+COMPILED_LOADABLES=$(shell file ../dist/bash-5.1.8/examples/loadables/*|grep 'ELF 64-bit'|cut -d':' -f1|sort -u|xargs -I % basename % .o|sort -u)
+# > $(LOADABLES_LOG)
+
+
+# macro to replace file suffix list:
+CFILES=abc.c def.c
+OFILES = $(CFILES:.c=.o)
+
+
+b:
+	reset
+	echo $@
+	echo $?
+	color yellow black
+	echo CFILES=$(CFILES)
+	color blue black
+	echo OFILES=$(OFILES)
+	color black green
+	echo LOADABLES=$(LOADABLES) 
+	color black blue
+	echo LOADABLES_CFILES=$(LOADABLES_CFILES)
+	color black yellow
+	echo COMPILED_LOADABLES=$(COMPILED_LOADABLES)
+	color reset
+
 builtins:
-	echo $(BASH_DIR)
-	(cd $(BASH_DIR)/builtins/. && command ls *.o | xargs -I % basename % .c | sort -u|xargs -I % basename % .o|sort -u) > $(BUILTINS_LOG)
-	(command ls $(BASH_DIR))
-	(command ls $(BASH_DIR)/examples/loadables/*.c|xargs -I % basename % .c|sort -u) > $(LOADABLES_LOG)
+	color black yellow
 	(command cd $(BASH_DIR)/examples/loadables/. && make)
+	color reset
 
 copy:
 	rsync $(BASH_DIR)/libbash.a $(LIB_DIR)/libbash.a
