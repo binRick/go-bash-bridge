@@ -1,4 +1,4 @@
-#include "cso1.h"
+#include "libcso1.h"
 
 void mycso1Struct1Printer(char *s) {
 	fprintf(stderr, "[%d] %s> %s\n", 
