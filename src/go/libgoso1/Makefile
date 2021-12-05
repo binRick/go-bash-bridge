@@ -1,5 +1,5 @@
 .SUFFIXES: .o .c
-NAME=goso1
+NAME=libgoso1
 
 GCC ?= gcc
 GO ?= go

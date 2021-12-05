@@ -1,25 +1,24 @@
 MAKE ?= make
 
-
-RELEASE_DIR=./RELEASE
+RELEASE_DIR=/root/go-bash-bridge/RELEASE
 RELEASE_LIB_DIR=$(RELEASE_DIR)/lib
 RELEASE_BIN_DIR=$(RELEASE_DIR)/bin
 RELEASE_INCLUDE_DIR=$(RELEASE_DIR)/include
 
 EXEC_ENV=LD_LIBRARY_PATH=$(RELEASE_LIB_DIR)
 
-GOSO1=./src/go/goso1
+GOSO1=./src/go/libgoso1
 GOCALLCSO1=./src/go/call_cso1
 
 CSO1=./src/c/cso1
-CCALLGOSO1=./src/c/call_goso1
+CCALLGOSO1=./src/c/call_libgoso1
 
-all: clean goso1 cso1 call_goso1 call_cso1 list validate
+all: clean libgoso1 cso1 call_libgoso1 call_cso1 list validate
 
-goso1:
+libgoso1:
 	$(MAKE) -C $(GOSO1)
 
-call_goso1:
+call_libgoso1:
 	$(MAKE) -C $(CCALLGOSO1)
 
 cso1:
@@ -46,5 +45,6 @@ validate:
 	env $(EXEC_ENV) ./RELEASE/bin/call_cso1
 	color reset
 	color magenta black
-	env $(EXEC_ENV) ./RELEASE/bin/call_goso1
+	env $(EXEC_ENV) ./RELEASE/bin/call_libgoso1-static
+	env $(EXEC_ENV) ./RELEASE/bin/call_libgoso1-dynamic
 	color reset
