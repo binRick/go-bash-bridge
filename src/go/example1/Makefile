@@ -28,22 +28,35 @@ LIB_OBJ=libexample1.o
 LIB_AR=libexample1.a
 
 
-all: clean tidy build validate
+all: clean init tidy build validate
 
 tidy:
+	color red black
 	gofmt -w $(SRC_FILES)
 	goimports -w $(SRC_FILES)
+	color clear
 
-build:
+init:
+	color yellow black
 	[[ -f go.mod ]] || $(GO) mod init $(NAME)
 	$(GO) mod tidy
 	$(GO) get
+	color clear
+
+build:
+	color black blue
 	$(GO) build -o $(RELEASE_BIN_DIR)/$(NAME) $(GO_SRC_DIR)
+	color clear
 
 clean:
-	echo $(RM) go.mod go.sum
+	color red black
+	$(RM) go.mod go.sum
+	[[ -f $(RELEASE_BIN_DIR)/$(NAME) ]] && unlink $(RELEASE_BIN_DIR)/$(NAME)
+	color clear
 
 validate_build:
+	color green black
 	$(RELEASE_BIN_DIR)/$(NAME)
+	color clear
 	
 validate:	validate_build
