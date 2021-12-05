@@ -5,6 +5,7 @@ GCC ?= gcc
 GO ?= go
 GOFLAGS=-buildmode=c-shared 
 RM=rm -f
+RMRF=rm -rf
 MV=mv -f
 GREP=grep
 AR=ar
@@ -22,12 +23,15 @@ HDR=$(NAME).h
 HDRF=$(RELEASE_INCLUDE_DIR)/$(HDR)
 
 
-all: clean init tidy build validate release
+all: clean init tidy cgo build validate release
 
 build:
 	color black blue
 	$(GO) build -o $(SO) $(GOFLAGS) $(GO_SRC_DIR)
 	color clear
+
+cgo:
+	$(GO) tool cgo $(SRC_FILES)
 
 release:
 	$(MV) $(HDR) $(HDRF)
@@ -51,7 +55,8 @@ init:
 
 clean:
 	color red black
-	$(RM) $(HDR) $(SO) $(HDRF) $(SOF) go.mod
+	$(RM) $(HDR) $(SO) $(HDRF) $(SOF) go.mod 
+	$(RMRF) _obj
 	color clear
 
 validate_build:

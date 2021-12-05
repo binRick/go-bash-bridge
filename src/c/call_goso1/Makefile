@@ -23,12 +23,16 @@ GOSO1=$(RELEASE_LIB_DIR)/goso1.so
 NAME=call_goso1
 BIN=$(NAME)
 SRC_FILE=main.c
+SRC_FILE_DL=main_dl.c
 
 all: init clean build release validate
 
 build:
 	color blue black
-	$(GCC) -o $(BIN) -I $(RELEASE_INCLUDE_DIR) $(SRC_FILE) $(GOSO1)
+	#$(GCC) -o $(BIN) -L $(RELEASE_LIB_DIR) -I  $(RELEASE_INCLUDE_DIR) -ldl $(SRC_FILE_DL)
+	$(GCC) -o $(BIN) -L $(RELEASE_LIB_DIR) -ldl $(SRC_FILE_DL)
+#	$(GCC) -o $(BIN) -I $(RELEASE_INCLUDE_DIR) $(SRC_FILE) -ldl $(GOSO1)
+# $(GOSO1)
 	color reset
 
 release:
