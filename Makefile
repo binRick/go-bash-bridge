@@ -16,7 +16,13 @@ CCALLGOSO1=./src/c/call_libgoso1
 
 BASH_PATH=./src/bash
 
-all: all_pre clean bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate
+all: all_pre clean bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate addons
+
+addons: bash-it
+
+bash-it:
+	cd Makefiles && $(MAKE) -f bash-it.Makefile
+	echo OK
 
 all_pre: 
 	direnv allow .

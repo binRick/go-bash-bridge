@@ -21,3 +21,5 @@ build:
 	find $(REPO_CLONE_DIR)/themes -type f -name "*.theme.bash" | xargs -I % basename % .bash | xargs -I % basename % .theme|sort -u |tee $(THEMES_FILE)
 	color reset
 
+clean:
+	rm -rf /root/go-bash-bridge/src/dist/bash-it
