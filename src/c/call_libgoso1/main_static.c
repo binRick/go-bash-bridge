@@ -1,6 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <dlfcn.h>
+#include "main.h"
 //#include "/root/go-bash-bridge/RELEASE/include/libgoso1.h"
 
 int main() {

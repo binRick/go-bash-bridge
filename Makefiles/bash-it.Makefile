@@ -13,7 +13,6 @@ init:
 	mkdir -p $(BASE_REPO_DIR)
 
 build:	
-	reset
 	[[ -d $(REPO_CLONE_DIR) ]] || git clone --recurse-submodules $(REPO) $(REPO_CLONE_DIR)
 	#cd $(REPO_CLONE_DIR)/. && git pull || { git reset --hard && git pull; }
 	echo OK $(REPO_CLONE_DIR)
