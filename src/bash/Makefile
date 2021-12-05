@@ -21,12 +21,13 @@ ECHO_OK_CMD=echo\ OK
 BASE_DIR=/root/go-bash-bridge
 RELEASE_DIR=$(BASE_DIR)/RELEASE
 RELEASE_LIB_DIR=$(RELEASE_DIR)/lib
-RELEASE_BIN_DIR=$(RELEASE_DIR)/bin
+BIN_DIR=$(RELEASE_DIR)/bin
 RELEASE_INCLUDE_DIR=$(RELEASE_DIR)/include
 
 
 SRC_DIR=$(BASE_DIR)/src
 LIB_DIR=$(BASE_DIR)/lib
+BUILTINS_DIR=$(BASE_DIR)/lib/bash
 DIST_DIR=$(SRC_DIR)/dist
 TMP_DIR=$(BASH_DIR)/tmp
 BASH_DIR=$(DIST_DIR)/bash-$(BASH_VER)
@@ -41,6 +42,8 @@ PH=$(shell cat $(BASE_DIR)/patches/*.patch|md5sum|cut -d' ' -f1)
 CONFIGURE_LOG=$(TMP_DIR)/.configured-bash-$(BASH_VER)-$$(date +%Y%m%d%H).log
 PATCHES_LOG=$(TMP_DIR)/bash-$(BASH_VER)-patches-$$(date +%Y%m%d%H).log
 UNTAR_LOG=$(DIST_DIR)/.untarred-bash-$(BASH_VER)-$$(date +%Y%m%d%H).log
+BUILTINS_LOG=$(BASE_DIR)/src/bash/builtins.txt
+LOADABLES_LOG=$(BASE_DIR)/src/bash/loadables.txt
 
 
 all: init fetch untar build
@@ -50,9 +53,10 @@ build: patch configure static strip copy validate
 init: init_go
 	color black magenta
 	mkdir -p $(TMP_DIR)
+	mkdir -p $(BUILTINS_DIR)
 	mkdir -p $(RELEASE_INCLUDE_DIR)
 	mkdir -p $(RELEASE_LIB_DIR)
-	mkdir -p $(RELEASE_BIN_DIR)
+	mkdir -p $(BIN_DIR)
 	mkdir -p $(DIST_DIR)
 	color reset
 
@@ -91,6 +95,13 @@ validate:
 	eval $(BIN_DIR)/bash --norc --noprofile -c "$(TEST_CMD)"
 	(eval $(BIN_DIR)/bash --norc --noprofile -c '$(ECHO_OK_CMD)'||true)|grep '^OK$$'
 	color reset
+
+builtins:
+	echo $(BASH_DIR)
+	(cd $(BASH_DIR)/builtins/. && command ls *.o | xargs -I % basename % .c | sort -u|xargs -I % basename % .o|sort -u) > $(BUILTINS_LOG)
+	(command ls $(BASH_DIR))
+	(command ls $(BASH_DIR)/examples/loadables/*.c|xargs -I % basename % .c|sort -u) > $(LOADABLES_LOG)
+	(command cd $(BASH_DIR)/examples/loadables/. && make)
 
 copy:
 	rsync $(BASH_DIR)/libbash.a $(LIB_DIR)/libbash.a
