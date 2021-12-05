@@ -27,10 +27,11 @@ RELEASE_INCLUDE_DIR=$(RELEASE_DIR)/include
 
 SRC_DIR=$(BASE_DIR)/src
 LIB_DIR=$(BASE_DIR)/lib
-BUILTINS_DIR=$(BASE_DIR)/lib/bash
 DIST_DIR=$(SRC_DIR)/dist
 TMP_DIR=$(BASH_DIR)/tmp
 BASH_DIR=$(DIST_DIR)/bash-$(BASH_VER)
+BASH_LIB_DIR=$(RELEASE_DIR)/lib/bash
+BUILTINS_DIR=$(BASH_DIR)/examples/builtins
 
 TARBALL=bash-$(BASH_VER).tar.gz
 TARBALL_PATH=$(RELEASE_DIST_DIR)/bash-$(BASH_VER).tar.gz
@@ -53,11 +54,12 @@ build: patch configure static strip copy validate
 init: init_go
 	color black magenta
 	mkdir -p $(TMP_DIR)
-	mkdir -p $(BUILTINS_DIR)
+	mkdir -p $(BASH_LIB_DIR)
 	mkdir -p $(RELEASE_INCLUDE_DIR)
 	mkdir -p $(RELEASE_LIB_DIR)
 	mkdir -p $(BIN_DIR)
 	mkdir -p $(DIST_DIR)
+	mkdir -p $(BASH_LIB_DIR)
 	color reset
 
 init_go:
@@ -108,7 +110,6 @@ OFILES = $(CFILES:.c=.o)
 
 
 b:
-	reset
 	echo $@
 	echo $?
 	color yellow black
@@ -123,9 +124,35 @@ b:
 	echo COMPILED_LOADABLES=$(COMPILED_LOADABLES)
 	color reset
 
-builtins:
+builtins: init
+	color reset
 	color black yellow
 	(command cd $(BASH_DIR)/examples/loadables/. && make)
+
+
+LOADABLES_SRC_DIR=$(BASH_DIR)/examples/loadables
+_CP_COMPILED_LOADABLES_CMD = "cd $(LOADABLES_SRC_DIR)/. && command cp -v $(COMPILED_LOADABLES) $(BASH_LIB_DIR)/."
+CP_COMPILED_LOADABLES_CMD=cd $(LOADABLES_SRC_DIR)/. && command cp -v $(COMPILED_LOADABLES) $(BASH_LIB_DIR)/.
+
+lib: builtins b
+	reset
+	echo $(BASH_LIB_DIR)		
+	color black green
+	echo LOADABLES=$(LOADABLES) 
+	color black blue
+	echo LOADABLES_CFILES=$(LOADABLES_CFILES)
+	color black yellow
+	echo COMPILED_LOADABLES=$(COMPILED_LOADABLES)
+	color white black
+	echo $(_CP_COMPILED_LOADABLES_CMD)
+	color red black
+	$(CP_COMPILED_LOADABLES_CMD)
+	color green black
+	echo
+	echo "##############################################"
+	find $(RELEASE_DIR) -type f | cut -d/ -f5-100
+	echo "##############################################"
+	echo
 	color reset
 
 copy:
@@ -146,3 +173,6 @@ strip:
 	color black blue
 	(cd $(DIST_DIR)/bash-$(BASH_VER) && make -j 5 strip) 2>&1 | pv -l -s 510 -N Compile\ Striped\ Binaries\ Bash\ v$(BASH_VER) | wc -l
 	color reset
+
+
+
