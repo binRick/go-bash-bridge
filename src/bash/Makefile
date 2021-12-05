@@ -45,11 +45,13 @@ PATCHES_LOG=$(TMP_DIR)/bash-$(BASH_VER)-patches-$$(date +%Y%m%d%H).log
 UNTAR_LOG=$(DIST_DIR)/.untarred-bash-$(BASH_VER)-$$(date +%Y%m%d%H).log
 BUILTINS_LOG=$(BASE_DIR)/src/bash/builtins.txt
 LOADABLES_LOG=$(BASE_DIR)/src/bash/loadables.txt
+LOADABLES_SRC_DIR=$(BASH_DIR)/examples/loadables
+_CP_COMPILED_LOADABLES_CMD = "cd $(LOADABLES_SRC_DIR)/. && command cp -v $(COMPILED_LOADABLES) $(BASH_LIB_DIR)/."
 
 
 all: init fetch untar build
 
-build: patch configure static strip copy validate
+build: patch configure static strip copy validate lib
 
 init: init_go
 	color black magenta
@@ -130,8 +132,6 @@ builtins: init
 	(command cd $(BASH_DIR)/examples/loadables/. && make)
 
 
-LOADABLES_SRC_DIR=$(BASH_DIR)/examples/loadables
-_CP_COMPILED_LOADABLES_CMD = "cd $(LOADABLES_SRC_DIR)/. && command cp -v $(COMPILED_LOADABLES) $(BASH_LIB_DIR)/."
 CP_COMPILED_LOADABLES_CMD=cd $(LOADABLES_SRC_DIR)/. && command cp -v $(COMPILED_LOADABLES) $(BASH_LIB_DIR)/.
 
 lib: builtins b
