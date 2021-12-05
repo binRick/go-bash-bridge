@@ -1,8 +1,10 @@
+BASH_VER=5.1.8
+
+
 GCC ?= gcc
 GO ?= go
 CFLAGS=
 LIBS=
-
 RM=rm -f
 RMRF=rm -rf
 MV=mv -f
@@ -14,15 +16,15 @@ RANLIB=ranlib
 PASSH_ALREADY_EXISTS_PATCH_WRAPPER=passh -p n -P already\ exists
 PASSH_APPLY_PATCH_WRAPPER=passh -p n -P Apply\ anyway
 PASSH_WRAPPER=$(PASSH_APPLY_PATCH_WRAPPER) $(PASSH_ALREADY_EXISTS_PATCH_WRAPPER) 
-TEST_CMD=date
+TEST_CMD=$(shell command -v date)
 ECHO_OK_CMD=echo\ OK
 BASE_DIR=/root/go-bash-bridge
-RELEASE_DIR=/root/go-bash-bridge/RELEASE
+RELEASE_DIR=$(BASE_DIR)/RELEASE
 RELEASE_LIB_DIR=$(RELEASE_DIR)/lib
 RELEASE_BIN_DIR=$(RELEASE_DIR)/bin
 RELEASE_INCLUDE_DIR=$(RELEASE_DIR)/include
 
-BASH_VER=5.1.8
+
 SRC_DIR=$(BASE_DIR)/src
 LIB_DIR=$(BASE_DIR)/lib
 DIST_DIR=$(SRC_DIR)/dist
@@ -31,23 +33,21 @@ BASH_DIR=$(DIST_DIR)/bash-$(BASH_VER)
 
 TARBALL=bash-$(BASH_VER).tar.gz
 TARBALL_PATH=$(RELEASE_DIST_DIR)/bash-$(BASH_VER).tar.gz
-UNTAR_LOG=$(DIST_DIR)/.untarred-bash-$(BASH_VER)-$$(date +%Y%m%d%H).log
-CONFIGURE_LOG=$(DIST_DIR)/.configured-bash-$(BASH_VER)-$$(date +%Y%m%d%H).log
 
 
 PATCHES=$(shell ls $(BASE_DIR)/patches/*.patch)
 PH=$(shell cat $(BASE_DIR)/patches/*.patch|md5sum|cut -d' ' -f1)
+
+CONFIGURE_LOG=$(TMP_DIR)/.configured-bash-$(BASH_VER)-$$(date +%Y%m%d%H).log
 PATCHES_LOG=$(TMP_DIR)/bash-$(BASH_VER)-patches-$$(date +%Y%m%d%H).log
+UNTAR_LOG=$(DIST_DIR)/.untarred-bash-$(BASH_VER)-$$(date +%Y%m%d%H).log
 
 
 all: init fetch untar build
 
 build: patch configure static strip copy validate
 
-go:
-	command -v goimports || go install golang.org/x/tools/cmd/goimports@latest
-
-init: go
+init: init_go
 	color black magenta
 	mkdir -p $(TMP_DIR)
 	mkdir -p $(RELEASE_INCLUDE_DIR)
@@ -56,9 +56,14 @@ init: go
 	mkdir -p $(DIST_DIR)
 	color reset
 
+init_go:
+	command -v goimports || go install golang.org/x/tools/cmd/goimports@latest
+
+rmrf: rm
+	$(RMRF) $(DIST_DIR)/$(TARBALL)
+
 rm:
 	color black red
-	#$(RMRF) $(DIST_DIR)/$(TARBALL)
 	$(RMRF) $(DIST_DIR)/bash-$(BASH_VER)
 	color reset
 
@@ -93,7 +98,7 @@ copy:
 
 configure:
 	color black blue
-	(cd $(DIST_DIR)/bash-$(BASH_VER) && ./configure) 2>&1 | pv -l -s 608 -N Configure\ Bash\ v$(BASH_VER) | wc -l
+	[[ -f "$(CONFIGURE_LOG)" ]] || (cd $(DIST_DIR)/bash-$(BASH_VER) && ./configure | tee $(CONFIGURE_LOG)-cur) 2>&1 | pv -l -s 608 -N Configure\ Bash\ v$(BASH_VER) | wc -l && cat $(CONFIGURE_LOG)-cur > $(CONFIGURE_LOG)
 	color reset
 
 static:
