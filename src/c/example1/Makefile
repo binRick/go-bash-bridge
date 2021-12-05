@@ -1,8 +1,9 @@
+.SUFFIXES: .o .c
+
 GCC ?= gcc
 GO ?= go
 GOFLAGS=build -buildmode=c-archive
 CFLAGS=
-
 LIBS=
 
 RM=rm -f
@@ -20,14 +21,8 @@ LIB_SO=libexample1.so
 LIB_OBJ=libexample1.o
 LIB_AR=libexample1.a
 
-.SUFFIXES: .o .c
 
-all: dynamic
-
-r:
-	echo OK
-	date
-	echo ${GCC}
+all: clean dynamic static validate
 
 dynamic:
 	$(GCC) -fPIC -c $(SRC)
@@ -44,3 +39,7 @@ static:
 
 clean:
 	$(RM) $(OBJ) $(LIB_SO) $(LIB_OBJ) $(LIB_AR)
+
+validate:
+	file $(RELEASE_LIB_DIR)/$(LIB_SO) | grep 'shared object'
+	file $(RELEASE_LIB_DIR)/$(LIB_AR) | grep 'ar archive'
