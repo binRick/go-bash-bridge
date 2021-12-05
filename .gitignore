@@ -11,3 +11,4 @@ RELEASE/lib/*
 lib/libbash.a
 *.swp
 RELEASE/*/*
+scripts/bash/*.txt
