@@ -156,7 +156,7 @@ lib: builtins b
 	color reset
 
 copy:
-	rsync $(BASH_DIR)/libbash.a $(LIB_DIR)/libbash.a
+	rsync $(BASH_DIR)/libbash.a $(BASH_LIB_DIR)/libbash.a
 	rsync $(BASH_DIR)/bash $(BIN_DIR)/bash
 
 configure:

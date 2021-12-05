@@ -20,6 +20,8 @@ all: all_pre clean bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validat
 
 addons: bash-it
 
+-include foo.make
+
 bash-it:
 	cd Makefiles && $(MAKE) -f bash-it.Makefile
 	echo OK
