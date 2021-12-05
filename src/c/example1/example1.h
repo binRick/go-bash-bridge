@@ -1,3 +1,6 @@
+#ifndef _EXAMPLE1LIB_H_
+#define _EXAMPLE1LIB_H_
+
 #include <stdio.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -11,3 +14,8 @@ struct myExampleStruct1 {
 };
 
 void myStructPrinter(char *name);
+
+extern char * CHAR_TEST();
+extern int INT_TEST(int, int);
+
+#endif

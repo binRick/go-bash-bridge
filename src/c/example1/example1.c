@@ -8,3 +8,11 @@ void myStructPrinter(char *s) {
   );
 }
 
+
+char * CHAR_TEST() {
+	return "Hello there\0";
+}
+
+int INT_TEST(int a, int b) {
+	return a + b;
+}

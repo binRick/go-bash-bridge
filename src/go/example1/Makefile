@@ -9,7 +9,6 @@ LIBS=
 
 RM=rm -f
 MV=mv -f
-CP=cp -f
 GREP=grep
 AR=ar
 RANLIB=ranlib
@@ -18,23 +17,29 @@ RELEASE_LIB_DIR=../../../RELEASE/lib
 RELEASE_BIN_DIR=../../../RELEASE/bin
 RELEASE_INCLUDE_DIR=../../../RELEASE/include
 
+GO_SRC_DIR=.
+GO_SRC=example1.go
+SRC_FILES=example1.go
 NAME=example1
-HDR=example1.h
 SRC=example1.c
 OBJ=example1.o
 LIB_SO=libexample1.so
 LIB_OBJ=libexample1.o
 LIB_AR=libexample1.a
 
-all: init clean dynamic static include validate
 
-include:
-	$(CP) $(HDR) $(RELEASE_INCLUDE_DIR)
+all: clean tidy build
 
-init:
-	mkdir -p $(RELEASE_INCLUDE_DIR)
-	mkdir -p $(RELEASE_LIB_DIR)
-	mkdir -p $(RELEASE_BIN_DIR)
+tidy:
+	gofmt -w $(SRC_FILES)
+	goimports -w $(SRC_FILES)
+
+build:
+	$(GO) mod init $(NAME)
+	$(GO) mod tidy
+	$(GO) get
+	$(GO) build -o $(RELEASE_BIN_DIR)/$(NAME) $(GO_SRC_DIR)
+
 
 dynamic:
 	$(GCC) -fPIC -c $(SRC)
@@ -60,6 +65,7 @@ validate_static:
 	color reset
 
 clean:
-	$(RM) $(OBJ) $(LIB_SO) $(LIB_OBJ) $(LIB_AR)
+	$(RM) go.mod go.sum
+#$(OBJ) $(LIB_SO) $(LIB_OBJ) $(LIB_AR)
 
 validate:	validate_dynamic validate_static
