@@ -24,8 +24,8 @@ LIBGOSO1_PATH=$(RELEASE_LIB_DIR)/$(LIBGOSO1)
 NAME=call_libgoso1
 BIN_STATIC=$(NAME)-static
 BIN_DYNAMIC=$(NAME)-dynamic
-SRC_FILE=main.c
-SRC_FILE_DL=main_dl.c
+SRC_FILE=main_static.c
+SRC_FILE_DL=main_dynamic.c
 
 all: init clean build release validate
 
