@@ -1,6 +1,11 @@
 --- eval.c.orig	2021-12-06 12:26:19.960220784 -0500
-+++ eval.c	2021-12-06 12:36:24.797409216 -0500
-@@ -51,6 +51,12 @@
++++ eval.c	2021-12-06 12:41:34.658140062 -0500
+@@ -48,9 +48,17 @@
+ #  include "bashhist.h"
+ #endif
+ 
++#include "icecream-c/icecream.h"
++
  static void send_pwd_to_eterm PARAMS((void));
  static sighandler alrm_catcher PARAMS((int));
  
@@ -13,7 +18,7 @@
  /* Read and execute commands until EOF is reached.  This assumes that
     the input source has already been initialized. */
  int
-@@ -63,6 +69,7 @@
+@@ -63,6 +71,7 @@
  
    current_command = (COMMAND *)NULL;
  
@@ -21,7 +26,7 @@
    our_indirection_level = ++indirection_level;
  
    if (just_one_command)
-@@ -104,7 +111,7 @@
+@@ -104,7 +113,7 @@
  		 leave existing non-zero values (e.g., > 128 on signal)
  		 alone. */
  	      if (last_command_exit_value == 0)
@@ -30,7 +35,7 @@
  	      if (subshell_environment)
  		{
  		  current_command = (COMMAND *)NULL;
-@@ -114,6 +121,7 @@
+@@ -114,6 +123,7 @@
  	      /* Obstack free command elements, etc. */
  	      if (current_command)
  		{
@@ -38,7 +43,7 @@
  		  dispose_command (current_command);
  		  current_command = (COMMAND *)NULL;
  		}
-@@ -162,13 +170,31 @@
+@@ -162,13 +172,36 @@
  		  free (ps0_string);
  		}
  
@@ -52,6 +57,9 @@
 +            getpid(), current_command_number, started_ts,
 +            make_command_string (current_command)
 +    );
++    ic_str(make_command_string (current_command));
++    ic_int(current_command_number);
++    ic_long(started_ts);
 +
  
  	      executing = 1;
@@ -67,6 +75,8 @@
 +            last_command_exit_value,
 +            (ended_ts-started_ts)
 +    );
++    ic_int(last_command_exit_value);
++    ic_long((ended_ts-started_ts));
 +
  	    exec_done:
  	      QUIT;
