@@ -4,7 +4,7 @@
  extern char *glob_argv_flags;
  #endif
  
-+#include "icecream-c/color.h"
++#include "color.h"
 +
  extern int close PARAMS((int));
  

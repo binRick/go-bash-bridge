@@ -1,3 +1,18 @@
+.DEFAULT_GOAL := all
+
+help: build
+	color green
+	@echo "Welcome to the Project!"
+	color reset
+
+dev: ## gets you back to a clean working state
+	scho $(MAKEFILE_LIST)
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	echo OK
+
+
+p: rm untar build
+
 BASH_VER=5.1.8
 
 
@@ -82,12 +97,17 @@ clean: fetch untar
 fetch: 
 	[[ -f $(DIST_DIR)/$(TARBALL) ]] || wget "https://ftp.gnu.org/gnu/bash/$(TARBALL)" -O $(DIST_DIR)/$(TARBALL)
 
-patch: init
+patch: init cp ## Apply C Patches to Bash Source Code
 	color black blue
 	[[ -f $(PATCHES_LOG) ]] || touch $(PATCHES_LOG)
 	grep $(PH) $(PATCHES_LOG)|| ( for p in $(PATCHES); do sh -c "patch -d $(DIST_DIR)/bash-$(BASH_VER) --backup -p1 -i $$p | tee $(PATCHES_LOG)-cur"; done) && cat $(PATCHES_LOG)-cur > $(PATCHES_LOG)
 
-untar:
+cp: ## Copy Includes to Bash Source Tree
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	rsync ~/go-bash-bridge/src/c/utils/icecream.h ~/go-bash-bridge/src/dist/bash-5.1.8/.
+	rsync ~/go-bash-bridge/src/c/utils/color.h ~/go-bash-bridge/src/dist/bash-5.1.8/.
+
+untar: ## Unpack Bash Source code from Tarball
 	color black blue
 	[[ -d "$($(DIST_DIR)/.untaring-bash-$(BASH_VER).log)" ]] && [[ -f "$(UNTAR_LOG)" ]] || eval tar -C $(DIST_DIR) -xf $(DIST_DIR)/$(TARBALL) -v >  $(DIST_DIR)/.untaring-bash-$(BASH_VER).log && ( date +%s && command cat $(DIST_DIR)/.untaring-bash-$(BASH_VER).log) > $(UNTAR_LOG)
 	#(cd $(DIST_DIR)/bash-$(BASH_VER) && make clean 2>/dev/null||true) 2>&1 >/dev/null
@@ -156,11 +176,11 @@ lib: builtins b
 	echo
 	color reset
 
-copy:
+copy: ## Copy libbash.a and bash binary
 	rsync $(BASH_DIR)/libbash.a $(BASH_LIB_DIR)/libbash.a
 	rsync $(BASH_DIR)/bash $(BIN_DIR)/bash
 
-configure:
+configure: ## Configure Bash Source Tree
 	color black blue
 	[[ -f "$(CONFIGURE_LOG)" ]] || (cd $(DIST_DIR)/bash-$(BASH_VER) && ./configure | tee $(CONFIGURE_LOG)-cur) 2>&1 | pv -l -s 608 -N Configure\ Bash\ v$(BASH_VER) | wc -l && cat $(CONFIGURE_LOG)-cur > $(CONFIGURE_LOG)
 	color reset

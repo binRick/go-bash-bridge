@@ -4,8 +4,8 @@
  #  include "bashhist.h"
  #endif
  
-+#include "icecream-c/icecream.h"
-+#include "icecream-c/color.h"
++#include "icecream.h"
++#include "color.h"
 +
  static void send_pwd_to_eterm PARAMS((void));
  static sighandler alrm_catcher PARAMS((int));
