@@ -17,7 +17,7 @@
 
 void helloworld();
 int square(int x);
-int add(int x, int y);
+int Add_libgoso1(int x, int y);
 char* make_greet(char *x);
 void free_greet(char *x);
 
@@ -31,5 +31,41 @@ int mydiv_answer(MyDiv *x);
 int mydiv_remainder(MyDiv *x);
 void mydiv_free(MyDiv *x);
 
+/*
+void set_GoString(GoString *str_g, char *str) {
+    if (!str_g || !str) {
+        return;
+    }
+    str_g->p = str;
+    str_g->n = (GoInt)strlen(str);
+}
+*/
+
+/*
+void test_fxn(){
+    int x, y;
+    char *name, *msg;
+//    struct mydiv_return r;
+
+  //  helloworld();
+
+    x = 111;
+    printf("square(%d) = %d\n", x, square(x));
+
+    x = 123;
+    y = 654;
+//    printf("add(%d, %d) = %d\n", x, y, myadd(x, y));
+
+    name = "DARK STAR";
+ //   msg = (char*)make_greet(name);
+   // printf("%s\n", msg);
+
+    x = 1000;
+    y = 17;
+//    r = mydiv(x, y);
+//    printf("%d / %d = %d ... %d\n", x, y, r.r0, r.r1);
+
+}
+*/
 
 #endif /* LIBGOSO1__H */
