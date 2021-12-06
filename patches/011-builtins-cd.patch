@@ -1,5 +1,5 @@
 --- builtins/cd.def.orig	2021-12-06 12:51:05.369658119 -0500
-+++ builtins/cd.def	2021-12-06 12:51:01.105579880 -0500
++++ builtins/cd.def	2021-12-06 12:58:59.881364766 -0500
 @@ -50,6 +50,7 @@
  #include "common.h"
  #include "bashgetopt.h"
@@ -8,27 +8,23 @@
  #if !defined (errno)
  extern int errno;
  #endif /* !errno */
-@@ -270,6 +271,12 @@
+@@ -270,6 +271,7 @@
    char *dirname, *cdpath, *path, *temp;
    int path_index, no_symlinks, opt, lflag, e;
  
-+    fprintf(stderr,
-+            ""
-+            "<%d> CD>\n",
-+            getpid()
-+    );
 +
  #if defined (RESTRICTED_SHELL)
    if (restricted)
      {
-@@ -413,6 +420,12 @@
+@@ -413,6 +415,13 @@
    else
      dirname = list->word->word;
  
 +    fprintf(stderr,
 +            ""
-+            "<%d> CD-DIRNAME> %s\n",
-+            getpid(), dirname
++            "<%d> CD> %s\n",
++            getpid(), 
++            dirname
 +    );
 +
    /* When we get here, DIRNAME is the directory to change to.  If we
