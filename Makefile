@@ -16,7 +16,7 @@ CCALLGOSO1=./src/c/call_libgoso1
 
 BASH_PATH=./src/bash
 
-all: all_pre clean bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate addons
+all: all_pre clean bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate addons py
 
 addons: bash-it
 
@@ -68,3 +68,7 @@ validate:
 	color yellow black
 	env $(EXEC_ENV) ./RELEASE/bin/call_libgoso1-dynamic
 	color reset
+
+py:
+	./src/py/call_libso/py2.sh
+	./src/py/call_libso/py3.sh
