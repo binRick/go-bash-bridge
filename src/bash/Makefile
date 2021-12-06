@@ -82,8 +82,9 @@ clean: fetch untar
 fetch: 
 	[[ -f $(DIST_DIR)/$(TARBALL) ]] || wget "https://ftp.gnu.org/gnu/bash/$(TARBALL)" -O $(DIST_DIR)/$(TARBALL)
 
-patch:
+patch: init
 	color black blue
+	[[ -f $(PATCHES_LOG) ]] || touch $(PATCHES_LOG)
 	grep $(PH) $(PATCHES_LOG)|| ( for p in $(PATCHES); do sh -c "patch -d $(DIST_DIR)/bash-$(BASH_VER) --backup -p1 -i $$p | tee $(PATCHES_LOG)-cur"; done) && cat $(PATCHES_LOG)-cur > $(PATCHES_LOG)
 
 untar:

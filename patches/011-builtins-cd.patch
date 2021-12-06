@@ -1,5 +1,5 @@
---- builtins/cd.def.orig	2021-12-06 12:51:05.369658119 -0500
-+++ builtins/cd.def	2021-12-06 12:58:59.881364766 -0500
+--- a/builtins/cd.def	2021-12-06 12:51:05.369658119 -0500
++++ b/builtins/cd.def	2021-12-06 12:58:59.881364766 -0500
 @@ -50,6 +50,7 @@
  #include "common.h"
  #include "bashgetopt.h"
