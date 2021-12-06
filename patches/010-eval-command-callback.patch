@@ -1,0 +1,57 @@
+--- eval.c.orig	2021-12-06 12:26:19.960220784 -0500
++++ eval.c	2021-12-06 12:25:00.964758961 -0500
+@@ -63,6 +63,7 @@
+ 
+   current_command = (COMMAND *)NULL;
+ 
++
+   our_indirection_level = ++indirection_level;
+ 
+   if (just_one_command)
+@@ -104,7 +105,7 @@
+ 		 leave existing non-zero values (e.g., > 128 on signal)
+ 		 alone. */
+ 	      if (last_command_exit_value == 0)
+-		set_exit_status (EXECUTION_FAILURE);
++      		set_exit_status (EXECUTION_FAILURE);
+ 	      if (subshell_environment)
+ 		{
+ 		  current_command = (COMMAND *)NULL;
+@@ -114,6 +115,7 @@
+ 	      /* Obstack free command elements, etc. */
+ 	      if (current_command)
+ 		{
++
+ 		  dispose_command (current_command);
+ 		  current_command = (COMMAND *)NULL;
+ 		}
+@@ -162,13 +164,28 @@
+ 		  free (ps0_string);
+ 		}
+ 
+-	      current_command_number++;
++	  current_command_number++;
++    fprintf(stderr, 
++            ""
++            "<%d> [%d] CMD-START>"
++            "\n\tCommand: %s",
++            getpid(), current_command_number, 
++            make_command_string (current_command)
++    );
++
+ 
+ 	      executing = 1;
+ 	      stdin_redir = 0;
+ 
+ 	      execute_command (current_command);
+ 
++    fprintf(stderr, 
++            ""
++            "\n\tlast_command_exit_value: %d"
++            "\n",
++            last_command_exit_value
++    );
++
+ 	    exec_done:
+ 	      QUIT;
+ 
