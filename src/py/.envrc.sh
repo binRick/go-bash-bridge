@@ -1,0 +1,6 @@
+export SHARED_OBJECT_PATH=/root/go-bash-bridge/RELEASE/lib
+
+
+export LIBCSO1_PATH=$SHARED_OBJECT_PATH/libcso1.so  
+
+export SHARED_OBJECT_FILE=$LIBCSO1_PATH
