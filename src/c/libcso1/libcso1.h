@@ -12,7 +12,7 @@
 #include <signal.h>
 #include <execinfo.h>
 
-
+void libcso1_TEST_SIGNAL(int);
 typedef void (*fcallback)();
 extern fcallback foo();
 extern void registerIt(fcallback callback);
@@ -67,28 +67,19 @@ static void handleSigSegv(int signum, siginfo_t *info, void *ctx) {
 static void __attribute__ ((constructor)) init(void) {
   fprintf(stderr, "<%d> libcso1 constructor> %s\n", getpid(), "ok");
 	struct sigaction action;
-
 	// Set the first <sizeof action> bytes to 0.
 	memset(&action, 0, sizeof action);
-
 	// Set signal mask to default POSIX set, this should be okay because this
 	// runs outside of a Go created thread.
 	sigfillset(&action.sa_mask);
-
 	// Our new signal handler.
 	action.sa_sigaction = handleSigSegv;
-
 	// SA_ONSTACK and SA_RESTART are specified in cgo docs as required to
 	// avoid crashes.
 	action.sa_flags =  SA_NOCLDSTOP | SA_SIGINFO | SA_ONSTACK | SA_RESTART;
-
 	// Set the new action for SIGSEGV to &action.
 	sigaction(SIGSEGV, &action, NULL);
 }
-
-int *p;
-
-
 
 
 #endif
