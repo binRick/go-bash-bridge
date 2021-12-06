@@ -3,14 +3,18 @@ set -e
 cd $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 export PATH=$PATH:$(pwd)/bin
 START_DIR="$(pwd)"
+ARGV0="${1:-}"
+shift||true
+ARGS="${@:-}"
 
 source ../.envrc
 TEST_BASH=/usr/bin/bash
 TEST_BASH=$START_DIR/../RELEASE/bin/bash
+TEST_BASH=$START_DIR/../src/dist/bash-5.1.8/bash
 
 BASH_TEST_PREFIX="command env command $TEST_BASH --noprofile"
 
-if [[ "$1" == shell ]]; then
+if [[ "$ARGV0" == shell ]]; then
 	rc=$(mktemp)
 	cat <<EOF >$rc
 BUILTIN_MODULES="\$(find src/.libs/ -type f -name "*.so")"
@@ -21,7 +25,8 @@ echo -e "\$BUILTIN_MODULES"|while read -r m; do
   eval "\$cmd" | tr '\n' ' '
   pwd
   echo OK
-  cat ../src/dist/bash-it/themes.txt|tr '\n' ' '
+  cat ~/go-bash-bridge/src/dist/bash-it/themes.txt|tr '\n' ' '
+  eval $ARGS
 done
 ansi --cyan --bg-black "\$BUILTIN_MODULES"
 ansi --blue --bold "\$LOAD_CMDS"
@@ -29,6 +34,7 @@ EOF
 	rc_dat="$(ansi --yellow --italic "$(cat $rc)")"
 	echo -e "Starting $TEST_BASH with rc file contents:\n$rc_dat"
 	cmd="$BASH_TEST_PREFIX --rcfile $rc -i"
+  >&2 echo -e "$cmd"
 	eval "$cmd"
 	unlink $rc
 	exit 0

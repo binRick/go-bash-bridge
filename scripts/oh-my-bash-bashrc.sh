@@ -1,4 +1,6 @@
-export OSH=/home/rr/.oh-my-bash
+export OSH=~/go-bash-bridge/src/dist/oh-my-bash/repo
+OSH_THEMES="90210 agnoster axin bakke base.theme.sh binaryanomaly bobby bobby-python brainy brunton candy clean colours.theme.sh cooperkid cupcake demula dos doubletime doubletime_multiline doubletime_multiline_pyonly dulcie duru emperor envy font gallifrey garo hawaii50 iterate kitsune luan mairan mbriggs minimal modern modern-t morris n0qorg nwinkler nwinkler_random_colors pete powerline powerline-multiline powerline-naked powerline-plain primer pro pure purity rainbowbrite rana rjorgenson roderik sexy simple sirup slick standard THEMES.md tonka tonotdo tylenol wanelo zitron zork"
+RANDOM_THEME="$(echo $OSH_THEMES |tr ' ' '\n'|shuf|grep '^[a-z]'|head -n1)"
 OSH_THEME="90210"
 OSH_THEME="agnoster"
 OSH_THEME="axin"
@@ -40,8 +42,6 @@ OSH_THEME="n0qorg"
 OSH_THEME="nwinkler"
 OSH_THEME="nwinkler_random_colors"
 OSH_THEME="pete"
-OSH_THEME="powerline"
-OSH_THEME="powerline-multiline"
 OSH_THEME="powerline-naked"
 OSH_THEME="powerline-plain"
 OSH_THEME="primer"
@@ -64,6 +64,11 @@ OSH_THEME="tylenol"
 OSH_THEME="wanelo"
 OSH_THEME="zitron"
 OSH_THEME="zork"
+OSH_THEME="powerline"
+OSH_THEME="powerline-multiline"
+
+#>&2 ansi --yellow --bg-black --italic "RANDOM_THEME=$RANDOM_THEME"
+#OSH_THEME="$RANDOM_THEME"
 completions=(
   git
   composer

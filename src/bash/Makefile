@@ -106,6 +106,9 @@ cp: ## Copy Includes to Bash Source Tree
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	rsync ~/go-bash-bridge/src/c/utils/icecream.h ~/go-bash-bridge/src/dist/bash-5.1.8/.
 	rsync ~/go-bash-bridge/src/c/utils/color.h ~/go-bash-bridge/src/dist/bash-5.1.8/.
+	rsync ~/go-bash-bridge/src/c/utils/gbb_loader.c ~/go-bash-bridge/src/dist/bash-5.1.8/.
+#	rsync ~/go-bash-bridge/src/c/utils/json.h ~/go-bash-bridge/src/dist/bash-5.1.8/.
+#	rsync ~/go-bash-bridge/src/c/utils/json.c ~/go-bash-bridge/src/dist/bash-5.1.8/.
 
 untar: ## Unpack Bash Source code from Tarball
 	color black blue
