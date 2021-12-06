@@ -3,7 +3,7 @@
 GCC ?= gcc
 GO ?= go
 GOFLAGS=build -buildmode=c-archive
-SHARED_OBJ_FLAGS=-shared -lm
+SHARED_OBJ_FLAGS=-shared -lm 
 CFLAGS=
 LIBS=
 
@@ -38,7 +38,7 @@ dynamic:
 
 static:
 	color blue black
-	$(GCC) -o $(BIN_STATIC) -L $(RELEASE_LIB_DIR) -I $(RELEASE_INCLUDE_DIR) -lgoso1 $(SRC_FILE_DL)
+	$(GCC) -o $(BIN_STATIC) -L $(RELEASE_LIB_DIR) -I $(RELEASE_INCLUDE_DIR) -lgoso1 $(SRC_FILE_DL) -ldl
 	color reset
 
 release:
