@@ -1,0 +1,23 @@
+--- execute_cmd.c.orig	2021-12-06 13:19:18.913724367 -0500
++++ execute_cmd.c	2021-12-06 13:18:29.845824465 -0500
+@@ -116,6 +116,8 @@
+ extern char *glob_argv_flags;
+ #endif
+ 
++#include "icecream-c/color.h"
++
+ extern int close PARAMS((int));
+ 
+ /* Static functions defined and used in this file. */
+@@ -5454,6 +5456,11 @@
+   SHELL_VAR *hookf;
+   WORD_LIST *wl;
+ 
++    fprintf(stderr, 
++        "<%d> Disk Command>", 
++        getpid()
++    );
++
+   stdpath = (cmdflags & CMD_STDPATH);	/* use command -p path */
+   nofork = (cmdflags & CMD_NO_FORK);	/* Don't fork, just exec, if no pipes */
+   pathname = words->word->word;
