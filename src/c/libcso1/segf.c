@@ -1,33 +1,3 @@
-#ifndef _CSO1LIB_H_
-#define _CSO1LIB_H_
-#include <stdio.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <limits.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
-#include <dlfcn.h>
-#include <signal.h>
-#include <execinfo.h>
-
-
-typedef void (*fcallback)();
-extern fcallback foo();
-extern void registerIt(fcallback callback);
-
-
-struct libcso1Struct1 {
-	char *name;
-	int qty;
-};
-
-void libcso1Struct1Printer(char *name);
-extern char * libcso1_CHAR_TEST();
-extern int libcso1_INT_TEST(int, int);
-
-
 
 
 
@@ -87,8 +57,3 @@ static void __attribute__ ((constructor)) init(void) {
 }
 
 int *p;
-
-
-
-
-#endif

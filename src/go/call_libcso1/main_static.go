@@ -20,6 +20,12 @@ import (
 
 const NAME = "CALL_CSO1"
 
+//  C.registerIt(C.foo())
+
+func do_callback() error {
+	return nil
+}
+
 func debug(msg string, dat interface{}) {
 	dat = pp.Sprintf(`%s`, dat)
 	fmt.Fprintf(os.Stderr, "<%d> [%s] :: %s | %s\n",
