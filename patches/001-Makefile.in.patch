@@ -17,7 +17,7 @@ index b5339b7..c2d2175 100644
  
 -$(Program):  .build $(OBJECTS) $(BUILTINS_DEP) $(LIBDEP)
 +ldflags:
-+	@echo libbash.a $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LIBS)
++	@echo libbash.a $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LIBS) ../../../RELEASE/lib/bash_cmd_handler.o
 +
 +static: .build libbash.a $(BUILTINS_DEP) $(LIBDEP)
 +
