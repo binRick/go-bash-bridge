@@ -1,9 +1,48 @@
 #include <pthread.h>
+#include <stdint.h>
 #include <stdio.h>
 #include "chan/chan.h"
 
 
 chan_t* chan0;
+chan_t* jobs;
+chan_t* done;
+
+void* worker(){
+    // Process jobs until channel is closed.
+    void* job;
+    while (chan_recv(jobs, &job) == 0){
+        printf("received job %d\n", (int) job);
+    }
+
+    // Notify that all jobs were received.
+    printf("received all jobs\n");
+    chan_send(done, "1");
+    return NULL;
+}
+
+int main_worker(){
+    jobs = chan_init(5);
+    done = chan_init(0);
+
+    pthread_t th;
+    pthread_create(&th, NULL, worker, NULL);
+
+    int i;
+    for (i = 1; i <= 3; i++){
+        chan_send(jobs, (void*) (uintptr_t) i);
+        printf("sent job %d\n", i);
+    }
+    chan_close(jobs);
+    printf("sent all jobs\n");
+
+    // Wait for all jobs to be received.
+    chan_recv(done, NULL);
+
+    // Clean up channels.
+    chan_dispose(jobs);
+    chan_dispose(done);
+}
 
 void* bping(){
     chan_send(chan0, "bping");
@@ -11,6 +50,9 @@ void* bping(){
 }
 
 int do_bchan(){
+    main_worker();
+    return 0;
+
     int64_t s = timestamp();
     chan_t *chan = chan_init(2);
 
