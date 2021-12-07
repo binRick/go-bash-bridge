@@ -1,0 +1,17 @@
+EXECUTABLES = rlcat
+CFLAGS  = -g -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib -I /root/go-bash-bridge/src/dist/bash-5.1.8/include  -DREADLINE_LIBRARY -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline
+LDFLAGS = -g -L /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline -L/root/go-bash-bridge/src/dist/bash-5.1.8/lib
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<
+
+all: $(EXECUTABLES) test
+
+rlcat: rlcat.o
+	$(CC) $(LDFLAGS) -o $@ rlcat.o -lreadline -ltermcap
+
+
+rlcat.o: rlcat.c
+
+test:
+	cat /etc/passwd > .dat && ./rlcat ./.dat | pv -l > /dev/null
