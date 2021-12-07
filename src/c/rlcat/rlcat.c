@@ -56,6 +56,7 @@
 #include "chan.c"
 #include "bchan.c"
 #include "flag.c"
+#include "scriptexec.c"
 
 #define MAX_TASKS    1025
 
@@ -104,54 +105,6 @@ int do_cry()
 }
 
 
-void pm()
-{
-//progressbar *progress = progressbar_new("Loading",100);
-    for (int i = 0; i < 5; i++)
-    {
-        debug("debug log");
-        //info("informational log. Timestamp: %lld", timestamp());
-        //info("informational log. Timestamp: milliseconds_to_string-> %s", milliseconds_to_string(timestamp()/1000));
-        //info("informational log. Timestamp: milliseconds_to_long_string-> %s", milliseconds_to_long_string(timestamp()/1000));
-        notice("notice log");
-        warning("warning log");
-        error("error log");
-//    error("bytes_to_string 99999> %s", bytes_to_string(99999));
-        critical("critical log");
-
-        term_bold();
-        term_underline();
-        printf("bold and underlined\n");
-
-        term_reset();
-        printf("reset\n");
-
-        term_color("green");
-        printf("ok\n");
-
-        term_bold();
-        term_color("red");
-        term_background("red");
-        printf("fail");
-        term_reset();
-
-
-        int w = 0, h = 0;
-        term_size(&w, &h);
-        printf("%dx%d\n", w, h);
-
-        term_bold();
-        term_color("red");
-        term_background("red");
-        printf("fail");
-        term_reset();
-        term_show_cursor();
-
-        // Do some stuff
-}
-}
-
-
 static void
 usage()
 {
@@ -172,9 +125,7 @@ char **argv;
 
 do_flag(argc, argv);
     do_bchan();
-//pm();
-//term_hide_cursor();
-//do_cry();
+scriptexec_main();
 
  //   dbg(s, %s);
     progname = strrchr(argv[0], '/');

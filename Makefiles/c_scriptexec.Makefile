@@ -7,7 +7,7 @@ BASE_REPO_DIR=$(DIST_DIR)/c_scriptexec
 REPO_CLONE_DIR=$(BASE_REPO_DIR)/repo
 RELEASE_DIR=$(BASE_DIR)/RELEASE
 
-all: init clone build
+all: init clone build install
 
 init:
 	mkdir -p $(BASE_REPO_DIR)
