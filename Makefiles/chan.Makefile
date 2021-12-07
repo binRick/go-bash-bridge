@@ -35,6 +35,8 @@ test:
 	$(REPO_CLONE_DIR)/examples/select
 
 install:
-	rsync $(REPO_CLONE_DIR)/.libs/*.a $(RELEASE_DIR)/lib
+	rsync $(REPO_CLONE_DIR)/src/*.o $(RELEASE_DIR)/lib
+	rsync $(REPO_CLONE_DIR)/src/*.c $(RELEASE_DIR)/include
+	rsync $(REPO_CLONE_DIR)/src/*.h $(RELEASE_DIR)/include
 
 

@@ -21,12 +21,12 @@
      dirname = list->word->word;
  
 +    if(strlen(dirname)>0){
-+      handle_bash_cmd(); fprintf(stderr,
++      if(0 == 1){ handle_bash_cmd(); } handle_bash_cd(dirname); if(0 == 1){ fprintf(stderr,
 +            ""
 +            "<%d> CD> %s\n",
 +            getpid(), 
 +            dirname
-+      );}
++      );}}
    /* When we get here, DIRNAME is the directory to change to.  If we
       chdir successfully, just return. */
    if (change_to_directory (dirname, no_symlinks, xattrflag))

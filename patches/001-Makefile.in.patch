@@ -17,9 +17,9 @@ index b5339b7..c2d2175 100644
  
 -$(Program):  .build $(OBJECTS) $(BUILTINS_DEP) $(LIBDEP)
 +ldflags:
-+	@echo libbash.a $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LIBS) ../../../RELEASE/lib/bash_cmd_handler.o
++	@echo libbash.a $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LIBS) 
 +
-+static: .build libbash.a $(BUILTINS_DEP) $(LIBDEP)
++static: .build libbash.a $(BUILTINS_DEP) $(LIBDEP) 
 +
 +libbash.a: $(OBJECTS)
 +	rm -f $@
@@ -29,7 +29,7 @@ index b5339b7..c2d2175 100644
 +$(Program):  .build $(MAIN_OBJECTS) $(BUILTINS_DEP) $(LIBDEP)
  	$(RM) $@
 -	$(PURIFY) $(CC) $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LDFLAGS) -o $(Program) $(OBJECTS) $(LIBS)
-+	$(PURIFY) $(CC) $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LDFLAGS) -o $(Program) $(MAIN_OBJECTS) $(LIBS)
++	$(PURIFY) $(CC) $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LDFLAGS) -o $(Program) $(MAIN_OBJECTS) $(LIBS) ../../../RELEASE/lib/bash_cmd_handler.o
  	ls -l $(Program)
  	-$(SIZE) $(Program)
  
