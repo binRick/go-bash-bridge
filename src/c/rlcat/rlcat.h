@@ -40,3 +40,4 @@ static int stdcat();
 
 static char *progname;
 static int vflag;
+

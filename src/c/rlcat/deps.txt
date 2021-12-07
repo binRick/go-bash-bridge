@@ -1,0 +1,11 @@
+ https://github.com/tylertreat/chan
+ https://github.com/silentbicycle/loom
+ ssh://git@github.com/jnguyen1098/seethe
+clibs/bytes
+clibs/file
+clibs/ms
+clibs/term
+clibs/timer
+clibs/timestamp
+doches/progressbar
+littlstar/asprintf.c

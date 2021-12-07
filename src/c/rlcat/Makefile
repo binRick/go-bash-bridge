@@ -1,5 +1,5 @@
 EXECUTABLES = rlcat
-CFLAGS  = -g -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib -I /root/go-bash-bridge/src/dist/bash-5.1.8/include  -DREADLINE_LIBRARY -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline
+CFLAGS  = -g -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib -I /root/go-bash-bridge/src/dist/bash-5.1.8/include  -DREADLINE_LIBRARY -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline -I ./repos -I ./deps
 LDFLAGS = -g -L /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline -L/root/go-bash-bridge/src/dist/bash-5.1.8/lib
 
 .c.o:
@@ -14,4 +14,4 @@ rlcat: rlcat.o
 rlcat.o: rlcat.c
 
 test:
-	cat /etc/passwd > .dat && ./rlcat ./.dat | pv -l > /dev/null
+	cat /etc/passwd |head -n5 | ./rlcat ./.dat | pv -l

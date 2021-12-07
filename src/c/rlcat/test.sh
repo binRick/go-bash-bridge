@@ -1,1 +1,1 @@
-cat /etc/passwd > .dat && ./rlcat .dat | wc
+cat /etc/passwd |head -n5> .dat && ./rlcat .dat
