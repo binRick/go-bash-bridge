@@ -7,7 +7,7 @@ LDFLAGS = -g -L /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline -L/root/go
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-all: $(EXECUTABLES) test
+all: libs $(EXECUTABLES) test install
 
 libs:
 	#cc -g -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib -I /root/go-bash-bridge/src/dist/bash-5.1.8/include  -DREADLINE_LIBRARY -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline -I ./repos -I ./deps -I /root/go-bash-bridge/RELEASE/include -c rlcat.c
@@ -20,10 +20,11 @@ bash_cmd_handler.o:
 	$(CC) $(LDFLAGS) $(CFLAGS) -c bash_cmd_handler.c
 
 test:
-	echo ./bash_cmd_handler --help
+	./example --help
 
 clean:
 	$(RM) bash_cmd_handler bash_cmd_handler.o example
 
 install:
 	rsync bash_cmd_handler.o ~/go-bash-bridge/RELEASE/lib/.
+	rsync example ~/go-bash-bridge/RELEASE/bin/bash-cmd-handler-example
