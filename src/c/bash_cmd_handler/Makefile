@@ -26,7 +26,11 @@ init: ## Initialize Paths
 
 libs: bash_cmd_handler.o
 
-bash_cmd_handler.o:
+slog:
+#	cd ./../../../. && make -f Makefile -B slog
+	cd ./../../../Makefiles && make -f slog.Makefile install -B
+
+bash_cmd_handler.o: slog
 	$(CC) $(LDFLAGS) $(CFLAGS) -c bash_cmd_handler.c
 
 test:

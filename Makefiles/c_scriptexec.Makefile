@@ -15,19 +15,18 @@ init:
 	mkdir -p $(RELEASE_DIR)/include
 
 clone:	
+	@color green black
+	@echo Clone Repo $(REPO) $(REPO_CLONE_DIR)
 	[[ -d $(REPO_CLONE_DIR) ]] || git clone --recurse-submodules https://github.com/$(REPO) $(REPO_CLONE_DIR)
-	#cd $(REPO_CLONE_DIR)/. && git pull || { git reset --hard && git pull; }
-	echo OK $(REPO_CLONE_DIR)
-#	color green black
-#	find $(REPO_CLONE_DIR)/themes -type f -name "*.theme.bash" | xargs -I % basename % .bash | xargs -I % basename % .theme|sort -u |tee $(THEMES_FILE)
-	color reset
+	cd $(REPO_CLONE_DIR)/. && git pull || { git reset --hard && git pull; }
+	@color reset
 
 clean:
-	rm -rf /root/go-bash-bridge/src/dist/c_scriptexec
+	rm -rf $(REPO_CLONE_DIR)
 
 build:
-	cd $(REPO_CLONE_DIR) && ./build.sh
-	cd $(REPO_CLONE_DIR) && cmake .
+	[[ -d "$(REPO_CLONE_DIR)/target" ]] || { cd $(REPO_CLONE_DIR) && ./build.sh; }
+	[[ -f "$(REPO_CLONE_DIR)/Makefile" ]] || { 		cd $(REPO_CLONE_DIR) && cmake .; }
 	cd $(REPO_CLONE_DIR) && make
 
 install:
