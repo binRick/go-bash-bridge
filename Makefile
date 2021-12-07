@@ -16,7 +16,7 @@ CCALLGOSO1=./src/c/call_libgoso1
 
 BASH_PATH=./src/bash
 
-all: all_pre clean bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate addons py
+all: all_pre clean makefiles bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate addons py
 
 addons: bash-it
 
@@ -72,3 +72,10 @@ validate:
 py:
 	./src/py/call_libso/py2.sh
 	./src/py/call_libso/py3.sh
+
+makefiles:  ## Execute Makefiles
+	make -f Makefiles/bash-it.Makefile
+	make -f Makefiles/chan.Makefile
+	make -f Makefiles/c_scriptexec.Makefile
+	make -f Makefiles/oh-my-bash.Makefile
+	make -f Makefiles/seethe.Makefile
