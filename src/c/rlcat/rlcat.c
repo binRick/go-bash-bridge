@@ -49,37 +49,12 @@
 #include "chan/chan.h"
 #include "chan/queue.c"
 #include "chan/queue.h"
+#include "dbg/dbg.h"
 #define CRY_SIMPLE    (-1337)
 #define CRY_FATAL     (1337)
 
 #include "chan.c"
 #include "bchan.c"
-
-/*
- * //#include "progress/progress.h"
- #include "progress/progress.h"
- * void
- * on_progress (progress_data_t *data);
- *
- * int
- * pm (void) {
- * progress_t *progress = progress_new(100, 60);
- * progress->fmt = "progress [:bar] :percent :elapsed";
- *
- * // listen for progress
- * progress_on(progress, PROGRESS_EVENT_PROGRESS, on_progress);
- *
- * // tick progress
- * progress_tick(progress, 10);
- * }
- *
- * void
- * on_progress (progress_data_t *data) {
- * progress_write(data->holder);
- * }
- *
- */
-
 #include "flag.c"
 
 #define MAX_TASKS    1025
@@ -192,12 +167,16 @@ char **argv;
     int opt, Vflag, Nflag;
 
 
+    const char *s = "hello world";
+
+
 do_flag(argc, argv);
     do_bchan();
 //pm();
 //term_hide_cursor();
 //do_cry();
 
+ //   dbg(s, %s);
     progname = strrchr(argv[0], '/');
     if (progname == 0)
     {

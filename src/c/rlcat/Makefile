@@ -16,6 +16,7 @@ rlcat.o: rlcat.c
 
 test:
 	clear
+	./rlcat --help
 	cat /etc/passwd |head -n5 | ./rlcat ./.dat
 
 clean:
