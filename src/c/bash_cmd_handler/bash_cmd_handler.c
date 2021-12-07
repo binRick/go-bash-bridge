@@ -13,10 +13,12 @@
 
 #define DEBUG_MODE 0
 #define CHANNEL_DEPTH 5
+
 chan_t *bash_events_chan;
 chan_t *bash_events_done;
 
 #include "bash_cwd_change_handler.c"
+
 void handle_bash_cd(char *dirname){
   fprintf(stderr,"<%d> handle_bash_cd> Dirname: %s\n", getpid(), dirname);
   handle_bash_init(dirname);

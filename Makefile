@@ -53,10 +53,13 @@ py:
 
 makefiles: init makes srcs ## Execute all Makefiles
 
+slog: 
+	make -f Makefiles/slog.Makefile 2>&1 | pv -l -N slog  >/dev/null
+
 bash-it: 
 	make -f Makefiles/bash-it.Makefile 2>&1 | pv -l -N bash-it  >/dev/null
 
-makes: bash-it ## Execute Dist Makefiles
+makes: slog bash-it ## Execute Dist Makefiles
 	color yellow
 	make -f Makefiles/chan.Makefile 2>&1 | pv -l -N chan >/dev/null
 	make -f Makefiles/c_scriptexec.Makefile 2>&1 | pv -l -N c_scriptexec >/dev/null
