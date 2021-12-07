@@ -45,10 +45,10 @@
 //#include "ms/ms.c"
 #include "cry.h/cry.h"
 #include <sysexits.h>
-#include "chan/chan.c"
-#include "chan/chan.h"
-#include "chan/queue.c"
-#include "chan/queue.h"
+//#include "chan/chan.c"
+//#include "chan/chan.h"
+//#include "chan/queue.c"
+//#include "chan/queue.h"
 #include "dbg/dbg.h"
 #define CRY_SIMPLE    (-1337)
 #define CRY_FATAL     (1337)

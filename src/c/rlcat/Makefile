@@ -9,7 +9,7 @@ LDFLAGS = -g -L /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline -L/root/go
 all: $(EXECUTABLES) test
 
 rlcat: clean rlcat.o
-	$(CC) $(LDFLAGS) -o $@ rlcat.o -lreadline -ltermcap -lscriptexec
+	$(CC) $(LDFLAGS) -o $@ rlcat.o -lreadline -ltermcap -lscriptexec -lchan
 
 
 rlcat.o: rlcat.c
