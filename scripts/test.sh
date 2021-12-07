@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 cd $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-export PATH=$PATH:$(pwd)/bin
+export PATH=$PATH:$(pwd)/bin LD_LIBRARY_PATH=$(pwd)/RELEASE/lib
 START_DIR="$(pwd)"
 ARGV0="${1:-}"
 shift||true

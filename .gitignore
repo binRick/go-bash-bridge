@@ -15,3 +15,4 @@ scripts/bash/*.txt
 Makefiles/1
 Makefiles/2
 src/bash/*.txt
+src/dist/

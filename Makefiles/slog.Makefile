@@ -7,7 +7,7 @@ BASE_REPO_DIR=$(DIST_DIR)/$(NAME)
 REPO_CLONE_DIR=$(BASE_REPO_DIR)/repo
 RELEASE_DIR=$(BASE_DIR)/RELEASE
 
-all: init clone build test install
+all: init clone build test install validate
 
 init:
 	mkdir -p $(BASE_REPO_DIR)
@@ -32,3 +32,6 @@ test:
 install:
 	rsync $(REPO_CLONE_DIR)/*.h $(RELEASE_DIR)/include/.
 	rsync $(REPO_CLONE_DIR)/lib/libslog.so $(RELEASE_DIR)/lib/.
+
+validate:
+	find RELEASE -type f|grep slog

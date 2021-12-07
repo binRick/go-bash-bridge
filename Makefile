@@ -13,7 +13,7 @@ CSO1_PATH=./src/c/$(CSO1)
 CCALLGOSO1=./src/c/call_libgoso1
 BASH_PATH=./src/bash
 
-all: all_pre clean makefiles bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate addons py
+all: all_pre makefiles bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate addons py
 
 all_pre: 
 	direnv allow .
@@ -54,7 +54,8 @@ py:
 makefiles: init makes srcs ## Execute all Makefiles
 
 slog: 
-	make -f Makefiles/slog.Makefile 2>&1 | pv -l -N slog  >/dev/null
+	make -B -f Makefiles/slog.Makefile 2>&1 | pv -l -N slog  
+#>/dev/null
 
 bash-it: 
 	make -f Makefiles/bash-it.Makefile 2>&1 | pv -l -N bash-it  >/dev/null

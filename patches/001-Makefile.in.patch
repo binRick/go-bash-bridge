@@ -29,7 +29,7 @@ index b5339b7..c2d2175 100644
 +$(Program):  .build $(MAIN_OBJECTS) $(BUILTINS_DEP) $(LIBDEP)
  	$(RM) $@
 -	$(PURIFY) $(CC) $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LDFLAGS) -o $(Program) $(OBJECTS) $(LIBS)
-+	$(PURIFY) $(CC) $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LDFLAGS) -o $(Program) $(MAIN_OBJECTS) $(LIBS) ../../../RELEASE/lib/bash_cmd_handler.o
++	$(PURIFY) $(CC) $(BUILTINS_LDFLAGS) $(LIBRARY_LDFLAGS) $(LDFLAGS) -o $(Program) $(MAIN_OBJECTS) $(LIBS) ../../../RELEASE/lib/bash_cmd_handler.o -lslog -L../../../RELEASE/lib
  	ls -l $(Program)
  	-$(SIZE) $(Program)
  
