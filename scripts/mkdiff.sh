@@ -14,6 +14,7 @@ BASH_FILES="\
  eval.c\
  execute_cmd.c\
  builtins/cd.def\
+ config-top.h\
 "
 
 ID=0

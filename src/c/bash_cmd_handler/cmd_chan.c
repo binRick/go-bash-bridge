@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sysexits.h>
+#define DEBUG_MODE 0
 
 chan_t *chan0;
 chan_t *jobs0;
@@ -40,7 +41,8 @@ int main_worker()
     for (i = 1; i <= 3; i++)
     {
         chan_send(jobs0, (void *)(uintptr_t)i);
-        printf("sent job %d\n", i);
+        if(DEBUG_MODE == 1)
+          printf("sent job %d\n", i);
     }
     chan_close(jobs0);
     printf("sent all jobs\n");

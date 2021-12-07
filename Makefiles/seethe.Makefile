@@ -20,7 +20,7 @@ clone:
 	color reset
 
 clean:
-	rm -rf /root/go-bash-bridge/src/dist/$(NAME)/repo
+	rm -rf $(DIST_DIR)/$(NAME)/repo
 
 build:
 	gcc $(REPO_CLONE_DIR)/example.c -o $(REPO_CLONE_DIR)/example
