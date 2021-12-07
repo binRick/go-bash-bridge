@@ -4,14 +4,15 @@
 int do_bchan()
 {
     // Initialize buffered channel with a capacity of 2.
-    chan_t* chan = chan_init(2);
+    chan_t *chan = chan_init(2);
 
     // Send up to 2 values without receiver.
     chan_send(chan, "buffered");
     chan_send(chan, "channel");
 
     // Later receive the values.
-    void* msg;
+    void *msg;
+
     chan_recv(chan, &msg);
     printf("%s\n", msg);
 
@@ -22,11 +23,9 @@ int do_bchan()
     chan_dispose(chan);
 
 
-  term_reset();
-  printf("reset\n");
+    term_reset();
+    printf("reset\n");
 
-  term_color("green");
-  printf("\nBUFFERED CHANS OK!\n");
-
+    term_color("green");
+    printf("\nBUFFERED CHANS OK!\n");
 }
-
