@@ -117,17 +117,17 @@ int main(argc, argv) int argc;
 char **argv;
 {
     char *temp;
-    int opt, Vflag, Nflag;
+    int  opt, Vflag, Nflag;
 
 
     const char *s = "hello world";
 
 
-do_flag(argc, argv);
+    do_flag(argc, argv);
     do_bchan();
-scriptexec_main();
+    scriptexec_main();
 
- //   dbg(s, %s);
+    //   dbg(s, %s);
     progname = strrchr(argv[0], '/');
     if (progname == 0)
     {
@@ -191,7 +191,7 @@ fcopy(fp)
 FILE *fp;
 
 {
-    int c;
+    int  c;
     char *x;
 
     while ((c = getc(fp)) != EOF)
@@ -216,7 +216,7 @@ int stdcat(argc, argv) int argc;
 
 char **argv;
 {
-    int i, fd, r;
+    int  i, fd, r;
     char *s;
     FILE *fp;
 
