@@ -1,5 +1,5 @@
 MAKE ?= make
-
+MKDIR=mkdir -p
 RELEASE_DIR=/root/go-bash-bridge/RELEASE
 RELEASE_LIB_DIR=$(RELEASE_DIR)/lib
 RELEASE_BIN_DIR=$(RELEASE_DIR)/bin
@@ -29,7 +29,7 @@ bash-it:
 all_pre: 
 	direnv allow .
 
-bash:
+bash: makefiles
 	$(MAKE) -C $(BASH_PATH)
 
 libgoso1:
@@ -44,7 +44,7 @@ libcso1:
 call_libcso1:
 	$(MAKE) -C $(GOCALLCSO1)
 
-clean:
+clean: srcs_clean
 	rm -rf $(RELEASE_DIR)
 
 init:
@@ -73,13 +73,16 @@ py:
 	./src/py/call_libso/py2.sh
 	./src/py/call_libso/py3.sh
 
-makefiles:  ## Execute Makefiles
+makefiles: init srcs ## Execute Dist Makefiles
 	make -f Makefiles/bash-it.Makefile
 	make -f Makefiles/chan.Makefile
 	make -f Makefiles/c_scriptexec.Makefile
 	make -f Makefiles/oh-my-bash.Makefile
 	make -f Makefiles/seethe.Makefile
 
-srcs:
-	cd src/c/bash_cmd_handler
-	make -f Makefile
+srcs_clean:
+	make -C src/c/bash_cmd_handler -w -f Makefile clean
+
+srcs: ## Execute Custom App Makefiles
+	make -C src/c/bash_cmd_handler -w -f Makefile all
+

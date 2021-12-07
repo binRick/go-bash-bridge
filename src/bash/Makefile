@@ -188,14 +188,14 @@ configure: ## Configure Bash Source Tree
 	[[ -f "$(CONFIGURE_LOG)" ]] || (cd $(DIST_DIR)/bash-$(BASH_VER) && ./configure | tee $(CONFIGURE_LOG)-cur) 2>&1 | pv -l -s 608 -N Configure\ Bash\ v$(BASH_VER) | wc -l && cat $(CONFIGURE_LOG)-cur > $(CONFIGURE_LOG)
 	color reset
 
-static:
+static: ## Compile Static Bash
 	color black blue
-	(cd $(DIST_DIR)/bash-$(BASH_VER) && make static) 2>&1 | pv -l -s 491 -N Compile\ Static\ Bash\ v$(BASH_VER) | wc -l
+	cd $(DIST_DIR)/bash-$(BASH_VER) && make static 2>&1 | pv -l -s 491 -N Compile\ Static\ Bash\ v$(BASH_VER) | wc -l
 	color reset
 
-strip:
+strip: ## Compile Stripped Bash Binary
 	color black blue
-	(cd $(DIST_DIR)/bash-$(BASH_VER) && make -j 5 strip) 2>&1 | pv -l -s 510 -N Compile\ Striped\ Binaries\ Bash\ v$(BASH_VER) | wc -l
+	cd $(DIST_DIR)/bash-$(BASH_VER) && make -j 5 strip 2>&1 | pv -l -s 510 -N Compile\ Striped\ Binaries\ Bash\ v$(BASH_VER) | wc -l
 	color reset
 
 
