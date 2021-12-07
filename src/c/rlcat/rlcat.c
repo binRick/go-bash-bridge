@@ -29,7 +29,7 @@
 #include "rlcat.h"
 
 
-#include "seethe/seethe.h"
+#include "seethe.h"
 #include "deps/progressbar/progressbar.h"
 #include "timestamp/timestamp.h"
 #include "timestamp/timestamp.c"
