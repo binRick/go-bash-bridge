@@ -80,8 +80,7 @@
  *
  */
 
-
-static struct loom *l = NULL;
+#include "flag.c"
 
 #define MAX_TASKS    1025
 
@@ -193,7 +192,7 @@ char **argv;
     int opt, Vflag, Nflag;
 
 
-
+do_flag(argc, argv);
     do_bchan();
 //pm();
 //term_hide_cursor();
