@@ -16,6 +16,16 @@ BASH_TEST_PREFIX="command env command $TEST_BASH --noprofile"
 
 if [[ "$ARGV0" == shell ]]; then
 	rc=$(mktemp)
+	rc1=$(mktemp)
+	cat <<EOF >$rc1
+  #id
+  enable -f ~/go-bash-bridge/RELEASE/lib/bash/id id
+  enable -f ~/go-bash-bridge/RELEASE/lib/bash/cut cut
+  enable -f ~/go-bash-bridge/RELEASE/lib/bash/seq seq
+  enable -f ~/go-bash-bridge/RELEASE/lib/bash/dirname dirname
+  id
+  source ~/go-bash-bridge/scripts/oh-my-bash-bashrc.sh
+EOF
 	cat <<EOF >$rc
 BUILTIN_MODULES="\$(find src/.libs/ -type f -name "*.so")"
 echo -e "\$BUILTIN_MODULES"|while read -r m; do
@@ -31,11 +41,12 @@ done
 ansi --cyan --bg-black "\$BUILTIN_MODULES"
 ansi --blue --bold "\$LOAD_CMDS"
 EOF
-	rc_dat="$(ansi --yellow --italic "$(cat $rc)")"
+	rc_dat="$(ansi --yellow --italic "$(cat $rc1)")"
 	echo -e "Starting $TEST_BASH with rc file contents:\n$rc_dat"
-	cmd="$BASH_TEST_PREFIX --rcfile $rc -i"
+	cmd="$BASH_TEST_PREFIX --rcfile $rc1 -i"
   >&2 echo -e "$cmd"
 	eval "$cmd"
 	unlink $rc
+	unlink $rc1
 	exit 0
 fi
