@@ -79,3 +79,7 @@ makefiles:  ## Execute Makefiles
 	make -f Makefiles/c_scriptexec.Makefile
 	make -f Makefiles/oh-my-bash.Makefile
 	make -f Makefiles/seethe.Makefile
+
+srcs:
+	cd src/c/bash_cmd_handler
+	make -f Makefile
