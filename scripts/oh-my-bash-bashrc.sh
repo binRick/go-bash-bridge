@@ -1,4 +1,5 @@
-export OSH=~/go-bash-bridge/src/dist/oh-my-bash/repo
+export OSH=~/go-bash-bridge/etc/oh-my-bash
+export OSH_THEME_FILE=~/go-bash-bridge/etc/modern.theme.sh
 OSH_THEMES="90210 agnoster axin bakke base.theme.sh binaryanomaly bobby bobby-python brainy brunton candy clean colours.theme.sh cooperkid cupcake demula dos doubletime doubletime_multiline doubletime_multiline_pyonly dulcie duru emperor envy font gallifrey garo hawaii50 iterate kitsune luan mairan mbriggs minimal modern modern-t morris n0qorg nwinkler nwinkler_random_colors pete powerline powerline-multiline powerline-naked powerline-plain primer pro pure purity rainbowbrite rana rjorgenson roderik sexy simple sirup slick standard THEMES.md tonka tonotdo tylenol wanelo zitron zork"
 RANDOM_THEME="$(echo $OSH_THEMES |tr ' ' '\n'|shuf|grep '^[a-z]'|head -n1)"
 OSH_THEME="90210"
@@ -70,15 +71,18 @@ OSH_THEME="powerline-multiline"
 #>&2 ansi --yellow --bg-black --italic "RANDOM_THEME=$RANDOM_THEME"
 #OSH_THEME="$RANDOM_THEME"
 completions=(
-  git
-  composer
-  ssh
 )
 aliases=(
   general
 )
 plugins=(
-  git
-  bashmarks
 )
+
+clear
+BASH_BUILTINS_DIR=~/go-bash-bridge/RELEASE/lib/bash
+BUILTINS="ln id cut head rm seq sleep sync tee unlink uname mkdir dirname basename"
+for B in $BUILTINS; do enable -f $BASH_BUILTINS_DIR/$B $B; done
+#ls $BASH_BUILTINS_DIR
+
+
 source $OSH/oh-my-bash.sh

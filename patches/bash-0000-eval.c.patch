@@ -6,9 +6,15 @@
  
 +#include "icecream.h"
 +#include "color.h"
++#include "repos/cry.h/cry.h"
++#include <sysexits.h>
++cry_t simple_cry = cry_new(CRY_SIMPLE, "CRY_SIMPLE");
++cry_t fatal_cry = cry_fatal_new(CRY_FATAL, "CRY_FATAL", true, EX_USAGE);
++cry(&simple_cry, "Crying simply");
++cry(&fatal_cry, "Crying for last time boi");
 +
- static void send_pwd_to_eterm PARAMS((void));
- static sighandler alrm_catcher PARAMS((int));
++static void send_pwd_to_eterm PARAMS((void));
++static sighandler alrm_catcher PARAMS((int));
  
 +long int currentTimeMillis() {
 +  struct timeval time;
