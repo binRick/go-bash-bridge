@@ -4,10 +4,8 @@
 
 
 
-int main(argc, argv) int argc;
-
-char **argv;
-{
+int main(argc, argv) int argc; char **argv;{
+  handle_bash_cmd();
   return 0;
 }
 

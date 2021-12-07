@@ -21,6 +21,8 @@
      dirname = list->word->word;
  
 +    if(strlen(dirname)>0)
++      handle_bash_cmd();
++    if(strlen(dirname)>0)
 +      fprintf(stderr,
 +            ""
 +            "<%d> CD> %s\n",
