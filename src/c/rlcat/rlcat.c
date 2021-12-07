@@ -15,7 +15,17 @@
 //#include "X/X.c"
 //#include "ms/ms.h"
 //#include "ms/ms.c"
+#include "cry.h/cry.h"
+#include <sysexits.h>
+#include "chan/chan.c"
+#include "chan/chan.h"
+#include "chan/queue.c"
+#include "chan/queue.h"
+#define CRY_SIMPLE (-1337)
+#define CRY_FATAL (1337)
 
+#include "chan.c"
+#include "bchan.c"
 
 /*
 //#include "progress/progress.h"
@@ -100,6 +110,18 @@ static void cleanup_cb(void *env) {
 }
 
 
+int do_cry(){
+
+
+  cry_t simple_cry = cry_new(CRY_SIMPLE, "CRY_SIMPLE");
+  cry_t fatal_cry = cry_fatal_new(CRY_FATAL, "CRY_FATAL", true, EX_USAGE);
+
+  cry(&simple_cry, "Crying simply");
+  cry(&fatal_cry, "Crying for last time boi");
+
+  // This will get ignored lel
+  return 0;
+}
 void pm(){
 //progressbar *progress = progressbar_new("Loading",100);
 for(int i=0; i < 5; i++)
@@ -212,10 +234,13 @@ int main (argc, argv) int argc; char **argv; {
   char *temp;
   int opt, Vflag, Nflag;
 
-  term_hide_cursor();
 
 
-pm();
+do_chan();
+do_bchan();
+//pm();
+  //term_hide_cursor();
+//do_cry();
 
   progname = strrchr(argv[0], '/');
   if (progname == 0)
