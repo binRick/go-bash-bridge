@@ -9,11 +9,6 @@ LDFLAGS = -g -L /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline -L/root/go
 
 all: libs $(EXECUTABLES) test install
 
-libs:
-	#cc -g -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib -I /root/go-bash-bridge/src/dist/bash-5.1.8/include  -DREADLINE_LIBRARY -I /root/go-bash-bridge/src/dist/bash-5.1.8/lib/readline -I ./repos -I ./deps -I /root/go-bash-bridge/RELEASE/include -c rlcat.c
-	#$(CC) $(LDFLAGS) $(CFLAGS) bash_cmd_handler.c
-# -lreadline -ltermcap -lscriptexec -lchan
-
 libs: bash_cmd_handler.o
 
 bash_cmd_handler.o:
