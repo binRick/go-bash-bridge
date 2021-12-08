@@ -1,4 +1,11 @@
 BULK_MAKEFILES = log.c lwlog seethe cry chan slog ttyd c_scriptexec bash-it oh-my-bash
+
+###  clone to src/dist/github/${AUTHOR}-${REPO}
+BULK_GITHUB_REPOS = clibs/debug kdm9/clogged JoshuaS3/lognestmonster AriaPahlavan/clog tiborvass/whatfiles silentbicycle/loom silentbicycle/socket99 zserge/pt DaanDeMeyer/reproc /aklomp/base64 tiborvass/whatfiles fclaerho/armada chunqian/icecream-c xfgusta/hr brunexgeek/waitkey cwchentw/clibs brunexgeek/waitkey weiss/c99-snprintf 0x1C1B/libexc ararslan/termcolor-c armanirodriguez/ansifade Bowuigi/color BryanHaley/libvterm-ctrl kalexey89/libdye kilobyte/colorized-logs mdk97/Rainbow mlabbe/ansicodes rdtrob/unix-shell shakibamoshiri/bline Valen-H/Ansi
+BULK_GITHUB_REPOS_AUTOMAKE = kdm9/clogged silentbicycle/loom silentbicycle/socket99 zserge/pt /aklomp/base64 tiborvass/whatfiles fclaerho/armada xfgusta/hr brunexgeek/waitkey cwchentw/clibs Valen-H/Ansi armanirodriguez/ansifade kalexey89/libdye 0x1C1B/libexc
+BULK_GITHUB_REPOS_AUTOCMAKE = brunexgeek/waitkey
+BULK_GITHUB_REPOS_AUTOGEN = weiss/c99-snprintf
+
 MAKE ?= make
 MKDIR=mkdir -p
 BASE_DIR=/root/go-bash-bridge
@@ -37,6 +44,7 @@ call_libcso1:
 include Makefiles/main-clean.Makefile
 
 init:
+	$(MKDIR) src/dist/github
 	$(MKDIR) $(RELEASE_BIN_DIR)
 	$(MKDIR) $(RELEASE_LIB_DIR)
 	$(MKDIR) $(RELEASE_INCLUDE_DIR)
@@ -87,4 +95,18 @@ bulk: bulk_makefiles
 
 bulk_makefiles:
 	cd Makefiles/. && $(foreach mf,$(BULK_MAKEFILES),eval make -f $(mf).Makefile;)
+
+repos: bulk_github_repos makes
+
+makes: bulk_github_repos make cmake autogen
+
+bulk_github_repos: init
+	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS),eval git clone https://github.com/$(br) $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') ;)
+make: init
+	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS_AUTOMAKE),eval cd $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') && { hr||echo; } && ansi --yellow --italic --bold --blink -n "Running Automake on" && echo -ne " :: " && ansi --cyan --bold "$(br)" && { hr||echo; } && pwd && ls && { make || { make clean && make||true; } } && { hr||echo; };)
+cmake:
+	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS_AUTOCMAKE),eval cd $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') && { hr||echo; } && ansi --yellow --italic --bold --blink -n "Running Automake on" && echo -ne " :: " && ansi --cyan --bold "$(br)" && { hr||echo; } && pwd && ls && cmake . && { make || { make clean && make||true; } } && { hr||echo; };)
+autogen:
+	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS_AUTOGEN),eval cd $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') && { hr||echo; } && ansi --yellow --italic --bold --blink -n "Running Automake on" && echo -ne " :: " && ansi --cyan --bold "$(br)" && { hr||echo; } && pwd && ls && ./autogen.sh && ./configure && { make || { make clean && make||true; } } && { hr||echo; };)
+
 
