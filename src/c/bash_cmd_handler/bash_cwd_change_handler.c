@@ -16,23 +16,37 @@
 #define CRY_INFO          (3)
 #define CRY_FATAL         (1337)
 
+struct arg_struct {
+    int cwd;
+    int cmd;
+} * event_args;
+
+
+
 slog_stream *logger;
 int         logger_setup = 0;
 cry_t       cwd_cry;
 
-void * bash_event_handler()
-{
+void * bash_event_handler(){
+//    char *msg = (char *)_msg;
+//    char msg[strlen(MSG)+100];
+//    sprintf(msg, "<%d> CWD> %s", getpid(), MSG);
+char msg = "abc123";
     if (STDERR_ENABLED)
     {
-        fprintf(stderr, "<%d> bash_event_handler>\n", getpid());
+        fprintf(stderr, "<%d> bash_event_handler> %d Bytes:   %s\n", getpid(), strlen(msg), msg);
+    }
+    if (CHAN_ENABLED == 1)
+    {
+        cry(&cwd_cry, msg);
     }
     if (CRY_ENABLED == 1)
     {
-        cry(&cwd_cry, "t123");
+        cry(&cwd_cry, msg);
     }
     if (LOGGER_ENABLED == 1)
     {
-        slog_printf(logger, slog_loglevel_message, "<%d> log_handler: %s", getpid(), "xxxxxxxxxxxxxx");
+        slog_printf(logger, slog_loglevel_message, "%s", msg);
     }
 
 /*
@@ -46,6 +60,46 @@ void * bash_event_handler()
  *  printf("received all jobs\n");
  * chan_send(bash_events_done, "1");
  */
+}
+int log_handler(char *msg)
+{
+    if (logger_setup == 0)
+    {
+        logger_setup = 1;
+        if (STDERR_ENABLED)
+        {
+            fprintf(stderr, "<%d> handle_cwd_handler Constructor>\n", getpid());
+        }
+        if (CRY_ENABLED == 1)
+        {
+            cwd_cry = cry_new(1, "CWD");
+        }
+        if (CHAN_ENABLED)
+        {
+            bash_events_chan = chan_init(CHANNEL_DEPTH);
+            bash_events_done = chan_init(0);
+        }
+        if (LOGGER_ENABLED == 1)
+        {
+            logger = slog_create(LOGFILE, slog_flags_color);
+            if (!logger)
+            {
+                fprintf(stderr, "<%d> failed to open log file\n", getpid());
+            }
+            else
+            {
+                fprintf(stderr, "<%d> opened log file\n", getpid());
+            }
+        }
+    }
+    pthread_t th;
+//   struct arg_struct *event_args = arguments;
+    //struct be *args = (struct be *)malloc(sizeof(struct arg_struct));
+//    event_args = malloc(sizeof(struct arg_struct) * 1);
+
+    event_args->cwd = 100;
+    pthread_create(&th, NULL, bash_event_handler, NULL);
+    return 0;
 }
 
 
@@ -82,41 +136,6 @@ void * bash_event_handler()
  * fprintf(stderr,"<%d> handle_bash_closed\n", getpid());
  * }
  */
-int log_handler(char *msg)
-{
-    if (logger_setup == 0)
-    {
-        logger_setup = 1;
-        if (STDERR_ENABLED)
-        {
-            fprintf(stderr, "<%d> handle_cwd_handler Constructor>\n", getpid());
-        }
-        if (CRY_ENABLED == 1)
-        {
-            cwd_cry = cry_new(1, "CWD");
-        }
-        if (CHAN_ENABLED)
-        {
-            bash_events_chan = chan_init(CHANNEL_DEPTH);
-            bash_events_done = chan_init(0);
-        }
-        if (LOGGER_ENABLED == 1)
-        {
-            logger = slog_create(LOGFILE, slog_flags_color);
-            if (!logger)
-            {
-                fprintf(stderr, "<%d> failed to open log file\n", getpid());
-            }
-            else
-            {
-                fprintf(stderr, "<%d> opened log file\n", getpid());
-            }
-        }
-    }
-    pthread_t th;
-    pthread_create(&th, NULL, bash_event_handler, NULL);
-    return 0;
-}
 
 
 void handle_bash_init(char *dirname)

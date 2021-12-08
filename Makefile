@@ -1,10 +1,16 @@
 BULK_MAKEFILES = log.c lwlog seethe cry chan slog ttyd c_scriptexec bash-it oh-my-bash
+GITHUB_USER=git@
+GITHUB_PROTO=ssh
 
 ###  clone to src/dist/github/${AUTHOR}-${REPO}
-BULK_GITHUB_REPOS = clibs/debug kdm9/clogged JoshuaS3/lognestmonster AriaPahlavan/clog tiborvass/whatfiles silentbicycle/loom silentbicycle/socket99 zserge/pt DaanDeMeyer/reproc /aklomp/base64 tiborvass/whatfiles fclaerho/armada chunqian/icecream-c xfgusta/hr brunexgeek/waitkey cwchentw/clibs brunexgeek/waitkey weiss/c99-snprintf 0x1C1B/libexc ararslan/termcolor-c armanirodriguez/ansifade Bowuigi/color BryanHaley/libvterm-ctrl kalexey89/libdye kilobyte/colorized-logs mdk97/Rainbow mlabbe/ansicodes rdtrob/unix-shell shakibamoshiri/bline Valen-H/Ansi
-BULK_GITHUB_REPOS_AUTOMAKE = kdm9/clogged silentbicycle/loom silentbicycle/socket99 zserge/pt /aklomp/base64 tiborvass/whatfiles fclaerho/armada xfgusta/hr brunexgeek/waitkey cwchentw/clibs Valen-H/Ansi armanirodriguez/ansifade kalexey89/libdye 0x1C1B/libexc
-BULK_GITHUB_REPOS_AUTOCMAKE = brunexgeek/waitkey
-BULK_GITHUB_REPOS_AUTOGEN = weiss/c99-snprintf
+BULK_GITHUB_REPOS = mlichvar/newt clibs/debug kdm9/clogged JoshuaS3/lognestmonster AriaPahlavan/clog tiborvass/whatfiles silentbicycle/loom silentbicycle/socket99 zserge/pt DaanDeMeyer/reproc /aklomp/base64 tiborvass/whatfiles fclaerho/armada chunqian/icecream-c xfgusta/hr brunexgeek/waitkey cwchentw/clibs brunexgeek/waitkey weiss/c99-snprintf 0x1C1B/libexc ararslan/termcolor-c armanirodriguez/ansifade Bowuigi/color BryanHaley/libvterm-ctrl kalexey89/libdye kilobyte/colorized-logs mdk97/Rainbow mlabbe/ansicodes rdtrob/unix-shell shakibamoshiri/bline Valen-H/Ansi binRick/gatling hypercore-cxx/uv-async septag/sx stephenmathieson/batch.c clibs/flag clibs/timer clibs/timestamp Constellation/console-colors.c jwerle/strsplit.h nami-doc/trim.c stephenmathieson/batch.c trws/libdefer tylertreat/chan willemt/file2str littlstar/b64.c mbucc/chtmlescape littlstar/uri.c jb55/is_number.c
+
+BULK_GITHUB_REPOS_AUTOMAKE = kdm9/clogged silentbicycle/loom silentbicycle/socket99 zserge/pt /aklomp/base64 tiborvass/whatfiles fclaerho/armada xfgusta/hr brunexgeek/waitkey cwchentw/clibs Valen-H/Ansi armanirodriguez/ansifade kalexey89/libdye 0x1C1B/libexc binRick/gatling stephenmathieson/batch.c
+BULK_GITHUB_REPOS_AUTOCMAKE = brunexgeek/waitkey septag/sx
+BULK_GITHUB_REPOS_AUTOGEN = weiss/c99-snprintf mlichvar/newt
+BULK_GITHUB_REPOS_AUTO_ARCHIVES = Valen-H/Ansi/libansi.a
+BULK_GITHUB_REPOS_AUTO_SHARED_OBJECTS = Valen-H/Ansi:libansi.so
+
 
 MAKE ?= make
 MKDIR=mkdir -p
@@ -20,8 +26,9 @@ CSO1=libcso1
 CSO1_PATH=./src/c/$(CSO1)
 CCALLGOSO1=./src/c/call_libgoso1
 BASH_PATH=./src/bash
+GH=$(BASE_DIR)/src/dist/github
 
-all: all_pre makefiles bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate addons py
+all: all_pre makefiles bash libgoso1 libcso1 call_libgoso1 call_libcso1 list validate py
 
 all_pre: 
 	direnv allow .
@@ -107,7 +114,7 @@ a:
 	cd src/dist/github/. && eval "$(AUTOMAKE_CMDS)" | bash 
 
 bulk_github_repos: init
-	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS),eval git clone https://github.com/$(br) $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-')||true ;)
+	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS),eval git clone $(GITHUB_PROTO)://$(GITHUB_USER)github.com/$(br) $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-')||true ;)
 make: init
 	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS_AUTOMAKE),eval cd $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') && { hr||echo; } && ansi --yellow --italic --bold --blink -n "Running Automake on" && echo -ne " :: " && ansi --cyan --bold "$(br)" && { hr||echo; } && pwd && ls && { make || { make clean && make||true; } } && { hr||echo; };)
 cmake:
@@ -115,4 +122,12 @@ cmake:
 autogen:
 	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS_AUTOGEN),eval cd $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') && { hr||echo; } && ansi --yellow --italic --bold --blink -n "Running Automake on" && echo -ne " :: " && ansi --cyan --bold "$(br)" && { hr||echo; } && pwd && ls && ./autogen.sh && ./configure && { make || { make clean && make||true; } } && { hr||echo; };)
 
+so: auto_shared_objects auto_shared_objects_make_include
 
+auto_shared_objects:
+	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS_AUTO_SHARED_OBJECTS),eval rsync -v $(GH)/$(shell echo -e "$(br)"|tr '/' '-'|tr ':' '/') $(RELEASE_LIB_DIR)/.;)
+
+#cd $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') && { hr||echo; } && ansi --yellow --italic --bold --blink -n "Installing Shared Objects" && echo -ne $(br)" :: " && ansi --cyan --bold "$(br)" && { hr||echo; }; } && pwd; })
+
+auto_shared_objects_make_include:
+	@$(foreach br,$(BULK_GITHUB_REPOS_AUTO_SHARED_OBJECTS),eval echo -e "-l$(shell echo $(br)|cut -d: -f2|sed 's/.so//g'|sed 's/^lib//g') ";)
