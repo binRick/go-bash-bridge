@@ -7,6 +7,8 @@ cd $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
  ~/go-bash-bridge/run << EOF
 cd /
 cd /root
+enable -f ~/go-bash-bridge/RELEASE/lib/bash/seq seq
+enable -d seq
 true
 EOF
 

@@ -197,7 +197,7 @@ static: ## Compile Static Bash
 
 strip: ## Compile Stripped Bash Binary
 	@color black blue
-	cd $(DIST_DIR)/bash-$(BASH_VER) && make -j 5 strip 2>&1 | pv -l -s 510 -N Compile\ Striped\ Binaries\ Bash\ v$(BASH_VER) | wc -l
+	cd $(DIST_DIR)/bash-$(BASH_VER) && make -j 5 strip 2>&1 | pv -l -s 510 -N Compile\ Striped\ Binaries\ Bash\ v$(BASH_VER)
 	@color reset
 
 

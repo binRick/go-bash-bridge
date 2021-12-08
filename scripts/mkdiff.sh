@@ -24,6 +24,7 @@ BASH_FILES="\
  builtins/cd.def\
  config-top.h\
  builtins/enable.def\
+ builtins/eval.def\
 "
 ID=0
 
@@ -34,12 +35,9 @@ diff_bash_file(){
     $(basename $BASH_DIR)/$1 \
       > $patch_file"
   >&2   ansi --yellow --italic "$cmd"
-set -x
   cd $BASH_DIR
-  rsync $OBASH_DIR/$1 $BASH_DIR/$1.orig
-set +x
+  [[ -f $BASH_DIR/$1.orig ]] || rsync $OBASH_DIR/$1 $BASH_DIR/$1.orig
   #eval "$cmd"
-# | tee $patch_file >/dev/null
   ID=$(($ID+1))
 }
 
