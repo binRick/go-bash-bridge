@@ -9,18 +9,25 @@ CDIR=$(DIST_DIR)/clibs
 RMRF=rm -rf
 RMF=rm -f
 
-all: init find
+all: find
 
 init:
 	cd $(CDIR)/. && $(foreach c,$(CLIBS),eval clib install $(c);)
 
+CLIB_C_FILES=$(shell command find $(CDIR) -name "*.c"|sort -u|xargs -I % basename % | tr '\n' ' ')
+CLIB_H_FILES=$(shell command find $(CDIR) -name "*.h"|sort -u|xargs -I % basename % | tr '\n' ' ')
 find:
-	@color cyan
 	@echo
-	@find $(CDIR) -type f -name "*.c"|sort -u
-	@color reset
-	@echo
-	@color blue
-	@find $(CDIR) -type f -name "*.h"|sort -u
+	@color green black
+	@color ul
 	@echo
 	@color reset
+	@color black yellow
+	@echo -e "        CLIB C Files       : $(CLIB_C_FILES)"|tr '\n' ' '
+	@color reset
+	@color black red
+	@echo -e "        CLIB Header Files  : $(CLIB_H_FILES)"|tr '\n' ' '
+	@color reset
+	@color cyan black
+	@color reset
+	@echo
