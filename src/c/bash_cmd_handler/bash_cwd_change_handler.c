@@ -28,10 +28,10 @@ int         logger_setup = 0;
 cry_t       cwd_cry;
 
 void * bash_event_handler(){
-//    char *msg = (char *)_msg;
-//    char msg[strlen(MSG)+100];
-//    sprintf(msg, "<%d> CWD> %s", getpid(), MSG);
-char msg = "abc123";
+    //    char *msg = (char *)_msg;
+    //    char msg[strlen(MSG)+100];
+    //    fprintf(stderr, "<%d> CWD> %s", getpid(), (char *)dat);
+    char msg = "abc123";
     if (STDERR_ENABLED)
     {
         fprintf(stderr, "<%d> bash_event_handler> %d Bytes:   %s\n", getpid(), strlen(msg), msg);
@@ -68,7 +68,7 @@ int log_handler(char *msg)
         logger_setup = 1;
         if (STDERR_ENABLED)
         {
-            fprintf(stderr, "<%d> handle_cwd_handler Constructor>\n", getpid());
+            fprintf(stderr, "<%d> handle_cwd_handler CWD Stderr Logger\n", getpid());
         }
         if (CRY_ENABLED == 1)
         {
@@ -92,11 +92,14 @@ int log_handler(char *msg)
             }
         }
     }
-    pthread_t th;
 //   struct arg_struct *event_args = arguments;
     //struct be *args = (struct be *)malloc(sizeof(struct arg_struct));
 //    event_args = malloc(sizeof(struct arg_struct) * 1);
 
+//    bash_event_handler((void *)msg);
+            fprintf(stderr, "<%d> %s\n", getpid(), msg);
+    return 0;
+    pthread_t th;
     event_args->cwd = 100;
     pthread_create(&th, NULL, bash_event_handler, NULL);
     return 0;
