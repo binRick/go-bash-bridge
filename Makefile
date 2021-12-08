@@ -1,3 +1,4 @@
+BULK_MAKEFILES = log.c lwlog seethe cry chan slog ttyd c_scriptexec bash-it oh-my-bash
 MAKE ?= make
 MKDIR=mkdir -p
 BASE_DIR=/root/go-bash-bridge
@@ -81,3 +82,9 @@ srcs_clean:
 
 srcs: ## Execute Custom App Makefiles
 	make -C src/c/bash_cmd_handler -w -f Makefile all
+
+bulk: bulk_makefiles
+
+bulk_makefiles:
+	cd Makefiles/. && $(foreach mf,$(BULK_MAKEFILES),eval make -f $(mf).Makefile;)
+

@@ -5,9 +5,15 @@ cd $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 
  ~/go-bash-bridge/run << EOF
-id
+cd /
 pwd
-hostname -f
+cd /root
+pwd
+cd /etc
+pwd
+cd /tmp
+pwd
+true
 EOF
 
 

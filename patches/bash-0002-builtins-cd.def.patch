@@ -21,7 +21,7 @@
      dirname = list->word->word;
  
 +    if(strlen(dirname)>0){
-+      if(1 == 0){ log_handler(dirname); }  if(0 == 1){ handle_bash_cd(dirname); } if(1 == 1){ fprintf(stderr,
++      if(1 == 1){ log_handler(dirname); }  if(0 == 1){ handle_bash_cd(dirname); } if(0 == 1){ fprintf(stderr,
 +            ""
 +            "<%d> CD> %s\n",
 +            getpid(), 
