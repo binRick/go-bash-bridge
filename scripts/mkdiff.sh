@@ -6,26 +6,40 @@ PATCHES_DIR=$BASE_DIR/patches
 BASH_TARBALL=~/go-bash-bridge/src/dist/bash-5.1.8.tar.gz
 BASH_DIR=~/go-bash-bridge/src/dist/bash-5.1.8
 OBASH_DIR=~/go-bash-bridge/src/dist/bash-5.1.8-orig
-if [[ ! -d "$OBASH_DIR" ]]; then
-  tar -C $(dirname $OBASH_DIR) $BASH_TARBALL
-fi
+
+#if [[ ! -d "$OBASH_DIR" ]]; then
+#  td=$(mktemp -d)
+#  cd $td
+#  tar xf $BASH_TARBALL
+#  mv bash-5.1.8 $OBASH_DIR
+#  cd $OBASH_DIR
+#  pwd
+#  ls
+#fi
+
 
 BASH_FILES="\
  eval.c\
  execute_cmd.c\
  builtins/cd.def\
  config-top.h\
+ builtins/enable.def\
 "
-
 ID=0
 
 diff_bash_file(){
   patch_file="$PATCHES_DIR/bash-$(printf "%04d" $ID)-$(echo -e $1|tr '/' '-').patch"
-  cmd="cd $BASH_DIR/../. && diff -Naur $(basename $BASH_DIR)/$1.orig $(basename $BASH_DIR)/$1 > $patch_file"
+  cmd="cd $BASH_DIR/../. && diff -Naur \
+    $(basename $BASH_DIR)/$1.orig \
+    $(basename $BASH_DIR)/$1 \
+      > $patch_file"
   >&2   ansi --yellow --italic "$cmd"
+set -x
   cd $BASH_DIR
   rsync $OBASH_DIR/$1 $BASH_DIR/$1.orig
-#  eval "$cmd" | tee $patch_file >/dev/null
+set +x
+  #eval "$cmd"
+# | tee $patch_file >/dev/null
   ID=$(($ID+1))
 }
 

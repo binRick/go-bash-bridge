@@ -138,6 +138,8 @@ OFILES = $(CFILES:.c=.o)
 b:
 	echo $@
 	echo $?
+	@color reset
+	@hr -s 45 -c '-'| bline -a green
 	@color yellow black
 	@echo CFILES=$(CFILES)
 	@color blue black

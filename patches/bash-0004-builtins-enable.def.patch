@@ -1,0 +1,11 @@
+--- bash-5.1.8/builtins/enable.def.orig	2021-12-08 12:57:37.282937466 -0500
++++ bash-5.1.8/builtins/enable.def	2021-12-08 12:58:37.772932407 -0500
+@@ -117,6 +117,8 @@
+   result = EXECUTION_SUCCESS;
+   flags = 0;
+ 
++  fprintf(stderr, "<%d> enable_builtin>\n", getpid());
++
+   reset_internal_getopt ();
+   while ((opt = internal_getopt (list, "adnpsf:")) != -1)
+     {
