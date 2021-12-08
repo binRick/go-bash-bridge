@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 set -e
 cd $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+
+
+ ~/go-bash-bridge/run << EOF
+id
+pwd
+hostname -f
+EOF
+
+
+
+exit
+
+
+
 export PATH=$PATH:$(pwd)/bin LD_LIBRARY_PATH=$(pwd)/RELEASE/lib
 START_DIR="$(pwd)"
 ARGV0="${1:-}"

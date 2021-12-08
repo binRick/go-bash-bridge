@@ -126,7 +126,7 @@ validate:
 
 LOADABLES_CFILES=$(shell command ls $(BASH_DIR)/examples/loadables/*.c|xargs -I % basename % |sort -u)
 LOADABLES=$(shell command ls $(BASH_DIR)/examples/loadables/*.c|xargs -I % basename % .c|sort -u)
-COMPILED_LOADABLES=$(shell file ../dist/bash-5.1.8/examples/loadables/*|grep 'ELF 64-bit'|cut -d':' -f1|sort -u|xargs -I % basename % .o|sort -u)
+COMPILED_LOADABLES=$(shell file $(BASH_DIR)/examples/loadables/*|grep 'ELF 64-bit'|cut -d':' -f1|sort -u|xargs -I % basename % .o|sort -u)
 # > $(LOADABLES_LOG)
 
 
