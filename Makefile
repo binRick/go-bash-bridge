@@ -100,6 +100,11 @@ repos: bulk_github_repos makes
 
 makes: bulk_github_repos make cmake autogen
 
+AUTOMAKE_CMDS="`find $(RELEASE_DIR)/src/dist/github |grep '/makefile$' -i|xargs -I % dirname % | xargs -I % echo -e 'cd %/. && make'`"
+
+a:
+	@echo AUTOMAKE_CMDS=$(AUTOMAKE_CMDS)
+
 bulk_github_repos: init
 	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS),eval git clone https://github.com/$(br) $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') ;)
 make: init
