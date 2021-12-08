@@ -100,13 +100,14 @@ repos: bulk_github_repos makes
 
 makes: bulk_github_repos make cmake autogen
 
-AUTOMAKE_CMDS="`find $(RELEASE_DIR)/src/dist/github |grep '/makefile$' -i|xargs -I % dirname % | xargs -I % echo -e 'cd %/. && make'`"
+AUTOMAKE_CMDS="find $(RELEASE_DIR)/src/dist/github |grep '/makefile$$' -i|xargs -I % dirname % | xargs -I % echo -e 'cd %/. && make'"
 
 a:
 	@echo AUTOMAKE_CMDS=$(AUTOMAKE_CMDS)
+	cd src/dist/github/. && eval "$(AUTOMAKE_CMDS)" | bash 
 
 bulk_github_repos: init
-	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS),eval git clone https://github.com/$(br) $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') ;)
+	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS),eval git clone https://github.com/$(br) $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-')||true ;)
 make: init
 	cd src/dist/github/. && $(foreach br,$(BULK_GITHUB_REPOS_AUTOMAKE),eval cd $(BASE_DIR)/src/dist/github/$(shell echo $(br) | tr '/' '-') && { hr||echo; } && ansi --yellow --italic --bold --blink -n "Running Automake on" && echo -ne " :: " && ansi --cyan --bold "$(br)" && { hr||echo; } && pwd && ls && { make || { make clean && make||true; } } && { hr||echo; };)
 cmake:
