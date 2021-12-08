@@ -1,14 +1,14 @@
 .DEFAULT_GOAL := all
 
 help: build
-	color green
+	@color green
 	@echo "Welcome to the Project!"
-	color reset
+	@color reset
 
 dev: ## gets you back to a clean working state
-	scho $(MAKEFILE_LIST)
+	@echo $(MAKEFILE_LIST)
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-	echo OK
+	@echo OK
 
 
 p: rm untar build
@@ -69,7 +69,7 @@ all: init fetch untar build
 build: patch configure static strip copy validate lib
 
 init: init_go
-	color black magenta
+	@color black magenta
 	mkdir -p $(TMP_DIR)
 	mkdir -p $(BASH_LIB_DIR)
 	mkdir -p $(RELEASE_INCLUDE_DIR)
@@ -77,7 +77,7 @@ init: init_go
 	mkdir -p $(BIN_DIR)
 	mkdir -p $(DIST_DIR)
 	mkdir -p $(BASH_LIB_DIR)
-	color reset
+	@color reset
 
 init_go:
 	command -v goimports || go install golang.org/x/tools/cmd/goimports@latest
@@ -86,19 +86,19 @@ rmrf: rm
 	$(RMRF) $(DIST_DIR)/$(TARBALL)
 
 rm:
-	color black red
+	@color black red
 	$(RMRF) $(DIST_DIR)/bash-$(BASH_VER)
-	color reset
+	@color reset
 
 clean: fetch untar
-	color black yellow
-	color reset
+	@color black yellow
+	@color reset
 
 fetch: 
 	[[ -f $(DIST_DIR)/$(TARBALL) ]] || wget "https://ftp.gnu.org/gnu/bash/$(TARBALL)" -O $(DIST_DIR)/$(TARBALL)
 
 patch: init cp ## Apply C Patches to Bash Source Code
-	color black blue
+	@color black blue
 	[[ -f $(PATCHES_LOG) ]] || touch $(PATCHES_LOG)
 	grep $(PH) $(PATCHES_LOG)|| ( for p in $(PATCHES); do sh -c "patch -d $(DIST_DIR)/bash-$(BASH_VER) --backup -p1 -i $$p | tee $(PATCHES_LOG)-cur"; done) && cat $(PATCHES_LOG)-cur > $(PATCHES_LOG)
 
@@ -111,18 +111,18 @@ cp: ## Copy Includes to Bash Source Tree
 #	rsync ~/go-bash-bridge/src/c/utils/json.c ~/go-bash-bridge/src/dist/bash-5.1.8/.
 
 untar: ## Unpack Bash Source code from Tarball
-	color black blue
+	@color black blue
 	[[ -d "$($(DIST_DIR)/.untaring-bash-$(BASH_VER).log)" ]] && [[ -f "$(UNTAR_LOG)" ]] || eval tar -C $(DIST_DIR) -xf $(DIST_DIR)/$(TARBALL) -v >  $(DIST_DIR)/.untaring-bash-$(BASH_VER).log && ( date +%s && command cat $(DIST_DIR)/.untaring-bash-$(BASH_VER).log) > $(UNTAR_LOG)
 	#(cd $(DIST_DIR)/bash-$(BASH_VER) && make clean 2>/dev/null||true) 2>&1 >/dev/null
-	color reset
+	@color reset
 
 validate:
-	color black green
-	echo -ne $(BIN_DIR)/bash:\ 
-	eval $(BIN_DIR)/bash --version|head -n1
-	eval $(BIN_DIR)/bash --norc --noprofile -c "$(TEST_CMD)"
+	@color black green
+	@echo -ne $(BIN_DIR)/bash:\ 
+	@eval $(BIN_DIR)/bash --version|head -n1
+	@eval $(BIN_DIR)/bash --norc --noprofile -c "$(TEST_CMD)"
 	(eval $(BIN_DIR)/bash --norc --noprofile -c '$(ECHO_OK_CMD)'||true)|grep '^OK$$'
-	color reset
+	@color reset
 
 LOADABLES_CFILES=$(shell command ls $(BASH_DIR)/examples/loadables/*.c|xargs -I % basename % |sort -u)
 LOADABLES=$(shell command ls $(BASH_DIR)/examples/loadables/*.c|xargs -I % basename % .c|sort -u)
@@ -138,65 +138,65 @@ OFILES = $(CFILES:.c=.o)
 b:
 	echo $@
 	echo $?
-	color yellow black
-	echo CFILES=$(CFILES)
-	color blue black
-	echo OFILES=$(OFILES)
-	color black green
-	echo LOADABLES=$(LOADABLES) 
-	color black blue
-	echo LOADABLES_CFILES=$(LOADABLES_CFILES)
-	color black yellow
-	echo COMPILED_LOADABLES=$(COMPILED_LOADABLES)
-	color reset
+	@color yellow black
+	@echo CFILES=$(CFILES)
+	@color blue black
+	@echo OFILES=$(OFILES)
+	@color black green
+	@echo LOADABLES=$(LOADABLES) 
+	@color black blue
+	@echo LOADABLES_CFILES=$(LOADABLES_CFILES)
+	@color black yellow
+	@echo COMPILED_LOADABLES=$(COMPILED_LOADABLES)
+	@color reset
 
 builtins: init
-	color reset
-	color black yellow
+	@color reset
+	@color black yellow
 	(command cd $(BASH_DIR)/examples/loadables/. && make)
 
 
 CP_COMPILED_LOADABLES_CMD=cd $(LOADABLES_SRC_DIR)/. && command cp -v $(COMPILED_LOADABLES) $(BASH_LIB_DIR)/.
 
 lib: builtins b
-	reset
-	echo $(BASH_LIB_DIR)		
-	color black green
-	echo LOADABLES=$(LOADABLES) 
-	color black blue
-	echo LOADABLES_CFILES=$(LOADABLES_CFILES)
-	color black yellow
-	echo COMPILED_LOADABLES=$(COMPILED_LOADABLES)
-	color white black
-	echo $(_CP_COMPILED_LOADABLES_CMD)
-	color red black
+	@echo $(BASH_LIB_DIR)		
+	@color black green
+	@echo LOADABLES=$(LOADABLES) 
+	@color black blue
+	@echo LOADABLES_CFILES=$(LOADABLES_CFILES)
+	@color black yellow
+	@echo COMPILED_LOADABLES=$(COMPILED_LOADABLES)
+	@color white black
+	@echo $(_CP_COMPILED_LOADABLES_CMD)
+	@color red black
 	$(CP_COMPILED_LOADABLES_CMD)
-	color green black
-	echo
-	echo "##############################################"
-	find $(RELEASE_DIR) -type f | cut -d/ -f5-100
-	echo "##############################################"
-	echo
-	color reset
+	@color green black
+	@echo
+	@echo "##############################################"
+	@find $(RELEASE_DIR) -type f | cut -d/ -f5-100
+	@echo "##############################################"
+	@echo
+	@color reset
 
 copy: ## Copy libbash.a and bash binary
 	rsync $(BASH_DIR)/libbash.a $(BASH_LIB_DIR)/libbash.a
 	rsync $(BASH_DIR)/bash $(BIN_DIR)/bash
 
 configure: ## Configure Bash Source Tree
-	color black blue
+	@color black blue
 	[[ -f "$(CONFIGURE_LOG)" ]] || (cd $(DIST_DIR)/bash-$(BASH_VER) && ./configure | tee $(CONFIGURE_LOG)-cur) 2>&1 | pv -l -s 608 -N Configure\ Bash\ v$(BASH_VER) | wc -l && cat $(CONFIGURE_LOG)-cur > $(CONFIGURE_LOG)
-	color reset
+	@color reset
 
 static: ## Compile Static Bash
-	color black blue
-	cd $(DIST_DIR)/bash-$(BASH_VER) && make static 2>&1 | pv -l -s 491 -N Compile\ Static\ Bash\ v$(BASH_VER) | wc -l
-	color reset
+	@color black blue
+	cd $(DIST_DIR)/bash-$(BASH_VER) && make static 2>&1 | pv -l -s 491 -N Compile\ Static\ Bash\ v$(BASH_VER)
+	@color reset
+# | wc -l
 
 strip: ## Compile Stripped Bash Binary
-	color black blue
+	@color black blue
 	cd $(DIST_DIR)/bash-$(BASH_VER) && make -j 5 strip 2>&1 | pv -l -s 510 -N Compile\ Striped\ Binaries\ Bash\ v$(BASH_VER) | wc -l
-	color reset
+	@color reset
 
 
 
